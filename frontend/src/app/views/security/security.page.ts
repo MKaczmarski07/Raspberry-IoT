@@ -6,5 +6,10 @@ import { Component } from '@angular/core';
   styleUrls: ['security.page.scss'],
 })
 export class SecurityPage {
+  isArmed = false;
   constructor() {}
+
+  armHome() {
+    this.isArmed = !this.isArmed;
+  }
 }

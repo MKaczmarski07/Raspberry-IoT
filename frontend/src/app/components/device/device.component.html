@@ -1,3 +1,12 @@
-<p>
-  device works!
-</p>
+<div class="wrapper">
+  <div class="section">
+    <img alt="icon" />
+    <button *ngIf="canToggle" class="btn">
+      <ion-icon name="power-sharp"></ion-icon>
+    </button>
+  </div>
+  <div class="info">
+    <span class="name">{{ name }}</span>
+    <span class="localization">{{ localization }}</span>
+  </div>
+</div>

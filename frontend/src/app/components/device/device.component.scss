@@ -1,0 +1,9 @@
+.info {
+  display: flex;
+  flex-direction: column;
+  gap: 0.2rem;
+
+  .localization {
+    opacity: 0.6;
+  }
+}

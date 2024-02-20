@@ -1,13 +1,36 @@
-<ion-header [translucent]="true">
-  <ion-toolbar>
-    <ion-title> Tab 1 </ion-title>
-  </ion-toolbar>
-</ion-header>
+<ion-toolbar>
+  <ion-title>My Home</ion-title>
+  <!-- <ion-buttons slot="end">
+    <ion-button>
+      <ion-icon name="settings-outline"></ion-icon>
+    </ion-button>
+  </ion-buttons> -->
+</ion-toolbar>
 
-<ion-content [fullscreen]="true">
-  <ion-header collapse="condense">
-    <ion-toolbar>
-      <ion-title size="large">Tab 1</ion-title>
-    </ion-toolbar>
-  </ion-header>
+<ion-content>
+  <div class="main-content">
+    <div class="sensor-info-container">
+      <div class="wrapper sensor-info">
+        <span>{{currentTemperature}}°C</span>
+      </div>
+      <div class="wrapper sensor-info">
+        <span>{{currentHumidity}}%</span>
+      </div>
+    </div>
+    <app-weather></app-weather>
+    <span class="title">All Devices</span>
+    <div class="devices">
+      <app-device
+        [canToggle]="true"
+        [name]="'Lamp 1'"
+        [localization]="'Living room'"
+      ></app-device>
+      <app-device
+        [canToggle]="true"
+        [name]="'Lamp 1'"
+        [localization]="'Living room'"
+      ></app-device>
+      <app-device [name]="'Lamp 1'" [localization]="'Living room'"></app-device>
+    </div>
+  </div>
 </ion-content>

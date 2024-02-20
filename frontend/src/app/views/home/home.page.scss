@@ -1,0 +1,20 @@
+.sensor-info-container {
+  display: flex;
+  gap: 20px;
+}
+
+.sensor-info {
+  display: flex;
+  flex-direction: row !important;
+  justify-content: center;
+}
+
+.devices {
+  display: grid;
+  grid-template-columns: repeat(1, 1fr);
+  gap: 20px;
+
+  @media (min-width: 350px) {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}

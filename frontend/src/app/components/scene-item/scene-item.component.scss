@@ -1,0 +1,12 @@
+.scene-item {
+  flex-direction: row !important;
+  justify-content: space-between !important;
+
+  .sub-section {
+    display: flex;
+    gap: 0.6rem;
+    align-items: center;
+    font-size: 1.2rem;
+    font-weight: 500;
+  }
+}
