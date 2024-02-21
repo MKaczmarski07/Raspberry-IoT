@@ -21,16 +21,17 @@
     <span class="title">All Devices</span>
     <div class="devices">
       <app-device
+        (click)="blinkDiode()"
         [canToggle]="true"
         [name]="'Lamp 1'"
         [localization]="'Living room'"
       ></app-device>
       <app-device
         [canToggle]="true"
-        [name]="'Lamp 1'"
+        [name]="'Lamp 2'"
         [localization]="'Living room'"
       ></app-device>
-      <app-device [name]="'Lamp 1'" [localization]="'Living room'"></app-device>
+      <app-device [name]="'Lamp 3'" [localization]="'Living room'"></app-device>
     </div>
   </div>
 </ion-content>

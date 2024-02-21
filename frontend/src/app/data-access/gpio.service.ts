@@ -1,4 +1,8 @@
 import { Injectable } from '@angular/core';
+import { HttpClient, HttpErrorResponse } from '@angular/common/http';
+import { catchError, tap } from 'rxjs/operators';
+import { throwError } from 'rxjs';
+import { environment } from 'src/environments/environment';
 
 @Injectable({
   providedIn: 'root',
@@ -6,5 +10,23 @@ import { Injectable } from '@angular/core';
 export class GpioService {
   // Service used to communicate with the GPIO REST API
 
-  constructor() {}
+  constructor(private http: HttpClient) {}
+
+  blinkDiode() {
+    // Send a request to the REST API to blink the diode
+    return this.http
+      .post(`http://${environment.RASPBERRY_PI_IP}:5000/led_blink`, {
+        pin: 17,
+      })
+      .pipe(
+        catchError(this.handleError),
+        tap((response) => {
+          console.log(response);
+        })
+      );
+  }
+
+  private handleError(errorRes: HttpErrorResponse) {
+    return throwError(errorRes);
+  }
 }
