@@ -62,7 +62,7 @@ The main goal of the project is to develop a comprehensive and user-friendly sma
 | - | 1 | Power supply module for the breadboard |
 | JustPi - 830 breadboard | 1 | Tool used to build circuits without soldering |
 | RGB LED diode, co-anode | 2 | - |
-| Resistor 1 kΩ  | 6 | - |
+| Resistor 220Ω  | 6 | - |
 
 <a name="hardware-architecture"></a>
 ## Hardware Architecture
@@ -80,6 +80,7 @@ The main goal of the project is to develop a comprehensive and user-friendly sma
 [Python 3 🔗](https://www.python.org)<br>
 [Flask 🔗](https://flask.palletsprojects.com/en/3.0.x/)<br>
 [Flask CORS 🔗](https://flask-cors.readthedocs.io/en/latest/)<br>
+[Adafruit CircuitPython DHT 🔗](https://docs.circuitpython.org/projects/dht/en/latest/)<br>
 <!-- 
 [Docker 🔗]()<br>
 Node.js min v18.13 !!!

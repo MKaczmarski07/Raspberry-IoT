@@ -26,6 +26,14 @@ export class GpioService {
       );
   }
 
+  getTemperatureAndHumidity() {
+    return this.http
+      .get(
+        `http://${environment.RASPBERRY_PI_IP}:5000/temperature_and_humidity`
+      )
+      .pipe(catchError(this.handleError));
+  }
+
   private handleError(errorRes: HttpErrorResponse) {
     return throwError(errorRes);
   }

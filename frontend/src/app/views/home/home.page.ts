@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { GpioService } from 'src/app/data-access/gpio.service';
 import { Subscription } from 'rxjs';
 
@@ -7,20 +7,28 @@ import { Subscription } from 'rxjs';
   templateUrl: 'home.page.html',
   styleUrls: ['home.page.scss'],
 })
-export class HomePage {
-  currentTemperature = 20;
-  currentHumidity = 50;
-  diodeSubscription: Subscription | undefined;
+export class HomePage implements OnInit {
+  currentTemperature = 0;
+  currentHumidity = 0;
+  temperatureAndHumiditySub: Subscription | undefined;
   constructor(private gpioService: GpioService) {}
 
-  blinkDiode() {
-    console.log('Blinking diode');
-    this.diodeSubscription = this.gpioService.blinkDiode().subscribe();
+  ngOnInit() {
+    this.getTemperatureAndHumidity();
+  }
+
+  getTemperatureAndHumidity() {
+    this.temperatureAndHumiditySub = this.gpioService
+      .getTemperatureAndHumidity()
+      .subscribe((response: any) => {
+        this.currentTemperature = response[0];
+        this.currentHumidity = response[1];
+      });
   }
 
   ngOnDestroy() {
-    if (this.diodeSubscription) {
-      this.diodeSubscription.unsubscribe();
+    if (this.temperatureAndHumiditySub) {
+      this.temperatureAndHumiditySub.unsubscribe();
     }
   }
 }
