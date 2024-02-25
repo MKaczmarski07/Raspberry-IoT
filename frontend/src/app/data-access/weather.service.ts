@@ -9,32 +9,37 @@ import { Geolocation } from '@capacitor/geolocation';
   providedIn: 'root',
 })
 export class WeatherService {
-  latitude: number | undefined;
-  longitude: number | undefined;
   constructor(private http: HttpClient) {}
 
   // https://ionicframework.com/docs/native/geolocation Privacy !!!!!
   getGeoLocation() {
-    Geolocation.getCurrentPosition().then((position) => {
-      this.latitude = position.coords.latitude;
-      this.longitude = position.coords.longitude;
-      console.log('Latitude', this.latitude);
-      console.log('Longitude', this.longitude);
+    return Geolocation.getCurrentPosition().then((position) => {
+      return {
+        latitude: position.coords.latitude,
+        longitude: position.coords.longitude,
+      };
     });
   }
 
-  getWeather() {
-    this.getGeoLocation();
+  async getWeather() {
+    const { latitude, longitude } = await this.getGeoLocation();
+    const response = await this.http
+      .get(
+        `https://api.openweathermap.org/data/2.5/weather?lat=${latitude}&lon=${longitude}&appid=${environment.WEATHER_API_KEY}`
+      )
+      .pipe(catchError(this.handleError));
+
+    return response;
+  }
+
+  async getCorrectCityName() {
+    // openweathermap.org/data/2.5 sometimes returns old names
+    const { latitude, longitude } = await this.getGeoLocation();
     return this.http
       .get(
-        `https://api.openweathermap.org/data/2.5/weather?lat=51.2598484&lon=22.5665786&appid=${environment.WEATHER_API_KEY}`
+        `http://api.openweathermap.org/geo/1.0/reverse?lat=${latitude}&lon=${longitude}&limit=1&appid=${environment.WEATHER_API_KEY}`
       )
-      .pipe(
-        catchError(this.handleError),
-        tap((response) => {
-          console.log(response);
-        })
-      );
+      .pipe(catchError(this.handleError));
   }
 
   private handleError(errorRes: HttpErrorResponse) {

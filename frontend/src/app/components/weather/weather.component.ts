@@ -1,6 +1,5 @@
 import { Component, OnInit } from '@angular/core';
 import { WeatherService } from 'src/app/data-access/weather.service';
-import { Subscription } from 'rxjs';
 
 @Component({
   selector: 'app-weather',
@@ -8,21 +7,32 @@ import { Subscription } from 'rxjs';
   styleUrls: ['./weather.component.scss'],
 })
 export class WeatherComponent implements OnInit {
-  weatherSubscription: Subscription | undefined;
+  city = 'Lodaing...';
+  country = '';
+  temperature = '0';
+  weather = 'Lodaing...';
 
   constructor(private weatherService: WeatherService) {}
 
   ngOnInit() {
     this.getWeather();
+    this.getCityName();
   }
 
-  getWeather() {
-    this.weatherSubscription = this.weatherService.getWeather().subscribe();
+  async getWeather() {
+    const weatherObservable = await this.weatherService.getWeather();
+    weatherObservable.subscribe((data: any) => {
+      console.log(data);
+      this.country = data.sys.country;
+      this.temperature = (data.main.temp - 273.15).toFixed(0);
+      this.weather = data.weather[0].main;
+    });
   }
 
-  ngOnDestroy() {
-    if (this.weatherSubscription) {
-      this.weatherSubscription.unsubscribe();
-    }
+  async getCityName() {
+    const cityObservable = await this.weatherService.getCorrectCityName();
+    cityObservable.subscribe((data: any) => {
+      this.city = data[0].name;
+    });
   }
 }
