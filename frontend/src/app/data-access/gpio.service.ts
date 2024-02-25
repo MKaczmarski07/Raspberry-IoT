@@ -34,6 +34,19 @@ export class GpioService {
       .pipe(catchError(this.handleError));
   }
 
+  detectMotion(isAllowed: boolean) {
+    return this.http
+      .post(`http://${environment.RASPBERRY_PI_IP}:5000/detect_motion`, {
+        is_allowed: isAllowed,
+      })
+      .pipe(
+        catchError(this.handleError),
+        tap((response) => {
+          console.log(response);
+        })
+      );
+  }
+
   private handleError(errorRes: HttpErrorResponse) {
     return throwError(errorRes);
   }

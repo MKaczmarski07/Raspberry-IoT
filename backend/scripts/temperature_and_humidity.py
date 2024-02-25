@@ -21,6 +21,7 @@ def kill_pulsei_process():
     else:
         # if found, kill the process
         os.system("kill " + pid)
+        print(f"The process {process_name} was killed.")
         
 
 def get_sensor_data():
@@ -42,7 +43,6 @@ def get_sensor_data():
             sensor.exit()
             raise error
     
-
 
 
 

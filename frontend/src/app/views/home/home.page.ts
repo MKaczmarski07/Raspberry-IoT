@@ -14,7 +14,7 @@ export class HomePage implements OnInit {
   constructor(private gpioService: GpioService) {}
 
   ngOnInit() {
-    this.getTemperatureAndHumidity();
+    // this.getTemperatureAndHumidity();
   }
 
   getTemperatureAndHumidity() {
