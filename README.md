@@ -33,18 +33,11 @@ The main goal of the project is to develop a comprehensive and user-friendly sma
 | ![App dark theme)] | ![App light theme)
 
 # Table of contents
-
-- [Smart Home Management Platform](#smart-home-management-platform)
-  - [About The Project](#about-the-project)
-  - [Features](#features)
-- [Table of contents](#table-of-contents)
-  - [Part list](#part-list)
-  - [Hardware Architecture](#hardware-architecture)
-  - [Software Architecture](#software-architecture)
-  - [Used Technologies](#used-technologies)
-  - [Setup the Raspberry Pi](#setup-the-raspberry-pi)
-    - [First steps](#first-steps)
-    - [Safe shutdown](#safe-shutdown)
+- [Part list](#part-list)
+- [Hardware Architecture](#hardware-architecture)
+- [Software Architecture](#software-architecture)
+- [Used Technologies](#used-technologies)
+- [Setup the Raspberry Pi](#setup-the-raspberry-pi)
 
 
 <a name="part-list"></a>
@@ -59,13 +52,17 @@ The main goal of the project is to develop a comprehensive and user-friendly sma
 | Active buzzer 5V 12mm | 1 | Small sound generator |
 | PIR HC-SR501 | 1 | Motion sensor  |
 | MicroSerwo SG-90 | 1 | Precisely controlled rotation mechanism |
-| - | 1 | Power supply module for the breadboard |
+| MB102 Power supply | 1 | Power supply module for the breadboard |
 | JustPi - 830 breadboard | 1 | Tool used to build circuits without soldering |
-| RGB LED diode, co-anode | 2 | - |
-| Resistor 220Ω  | 6 | - |
+| RGB LED diode, co-cathode | 2 | - |
+| Resistor 220 Ω  | 6 | - |
+| Resistor 1 kΩ  | 1 | - |
 
 <a name="hardware-architecture"></a>
 ## Hardware Architecture
+![scheme](https://github.com/MKaczmarski07/smart-home/assets/95142305/53f72963-b806-41de-9911-47c090140c6f)
+<i>Some components must be directly grounded to the raspberry pi to work properly. However, it is not recommended to power components such as motors directly from the board pins, because too high current may damage the pin or the computer.</i> <br/>
+
 
 <a name="software-architecture"></a>
 ## Software Architecture
