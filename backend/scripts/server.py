@@ -3,8 +3,8 @@ from flask_cors import CORS
 from time import sleep
 from temperature_and_humidity import get_sensor_data
 from motion_detector import detect_motion
+from led import led_on, led_off
 from timer import RepeatedTimer
-
 
 
 app = Flask(__name__)
@@ -29,8 +29,10 @@ def detect_motion():
     
     if is_allowed:
         motion_sensor.start()
+        led_on()
         return jsonify('House armed')
     else:
+        led_off()
         motion_sensor.stop()
         return jsonify('House unarmed')
 

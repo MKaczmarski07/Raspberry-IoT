@@ -1,7 +1,7 @@
 import RPi.GPIO as GPIO
-from time import sleep
 from datetime import date
 from datetime import datetime
+from alarm import alarm
 
 GPIO.setmode(GPIO.BCM)
 GPIO.setwarnings(False)
@@ -16,7 +16,8 @@ def get_time():
     
 def detect_motion():
     if GPIO.input(PIR_PIN):
-        print(get_date(),get_time(),' Motion Detected')          
+        print(get_date(),get_time(),' Motion Detected')
+        alarm(2)
            
             
 
