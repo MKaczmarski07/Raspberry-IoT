@@ -3,13 +3,16 @@ from flask_cors import CORS
 from time import sleep
 from temperature_and_humidity import get_sensor_data
 from security_system import SecuritySystem
+from rgb import Led_rgb
 
 
 app = Flask(__name__)
 CORS(app)
 
 
-security_system = SecuritySystem(0.2,4) 
+# create instances of object type elements
+security_system = SecuritySystem(0.2,4)
+rgb_one = Led_rgb(17,27,22)
 
 
 @app.route("/temperature_and_humidity", methods=["GET"])
@@ -32,7 +35,8 @@ def detect_motion():
         security_system.stop_system()
         return jsonify('House unarmed')
 
-        
+
+
 if __name__ == "__main__":
   app.run(host="0.0.0.0", port=5000)
 
