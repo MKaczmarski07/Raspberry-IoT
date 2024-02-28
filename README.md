@@ -60,7 +60,7 @@ The main goal of the project is to develop a comprehensive and user-friendly sma
 
 <a name="hardware-architecture"></a>
 ## Hardware Architecture
-![scheme](https://github.com/MKaczmarski07/smart-home/assets/95142305/53f72963-b806-41de-9911-47c090140c6f)
+![scheme](https://github.com/MKaczmarski07/smart-home/assets/95142305/2ee7998b-72b5-4f0a-9d51-e58bad7c0bf3)
 <i>Some components must be directly grounded to the raspberry pi to work properly. However, it is not recommended to power components such as motors directly from the board pins, because too high current may damage the pin or the computer.</i> <br/>
 
 
