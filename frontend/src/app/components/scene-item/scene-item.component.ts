@@ -7,6 +7,7 @@ import { Component, OnInit, Input } from '@angular/core';
 })
 export class SceneItemComponent implements OnInit {
   @Input() name = '';
+  @Input() iconName = '';
 
   constructor() {}
 

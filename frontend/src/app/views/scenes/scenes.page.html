@@ -4,6 +4,25 @@
 
 <ion-content>
   <div class="main-content">
-    <app-scene-item [name]="'Bedtime'"></app-scene-item>
+    <app-scene-item
+      [name]="'Bedtime'"
+      [iconName]="'bed-sharp'"
+      (click)="setScene('bedtime')"
+    ></app-scene-item>
+    <app-scene-item
+      [name]="'Romantic'"
+      [iconName]="'heart-sharp'"
+      (click)="setScene('romantic')"
+    ></app-scene-item>
+    <app-scene-item
+      [name]="'Night Sky'"
+      [iconName]="'moon-sharp'"
+      (click)="setScene('nightSky')"
+    ></app-scene-item>
+    <app-scene-item
+      [name]="'Warm'"
+      [iconName]="'flame-sharp'"
+      (click)="setScene('warm')"
+    ></app-scene-item>
   </div>
 </ion-content>

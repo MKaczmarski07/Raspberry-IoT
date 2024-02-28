@@ -22,7 +22,7 @@ export class DeviceComponent implements OnInit {
     this.isOn = !this.isOn;
 
     this.isOn
-      ? this.turnOnRGB(this.diodeNumber, [255, 0, 20])
+      ? this.turnOnRGB(this.diodeNumber, [255, 255, 255])
       : this.turnOffRGB(this.diodeNumber);
   }
 
