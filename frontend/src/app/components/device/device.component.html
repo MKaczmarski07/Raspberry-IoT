@@ -1,7 +1,14 @@
 <div class="wrapper">
   <div class="section">
     <img alt="icon" />
-    <button *ngIf="canToggle" class="btn">
+    <button
+      *ngIf="canToggle"
+      class="btn"
+      [ngClass]="{
+        'active': isOn,
+      }"
+      (click)="toggleDevice()"
+    >
       <ion-icon name="power-sharp"></ion-icon>
     </button>
   </div>

@@ -12,11 +12,16 @@ export class GpioService {
 
   constructor(private http: HttpClient) {}
 
-  blinkDiode() {
-    // Send a request to the REST API to blink the diode
+  handleRGB(
+    diode_number: number,
+    isOn: boolean,
+    color: number[] = [255, 255, 255]
+  ) {
     return this.http
-      .post(`http://${environment.RASPBERRY_PI_IP}:5000/led_blink`, {
-        pin: 17,
+      .post(`http://${environment.RASPBERRY_PI_IP}:5000/rgb`, {
+        diode_number: diode_number,
+        is_on: isOn,
+        color: color,
       })
       .pipe(
         catchError(this.handleError),
