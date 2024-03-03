@@ -1,19 +1,21 @@
-<div class="wrapper">
-  <div class="section">
-    <img alt="icon" />
-    <button
-      *ngIf="canToggle"
-      class="btn"
-      [ngClass]="{
+<div class="overlay">
+  <div class="wrapper" routerLink="device/{{ type }}/{{ id }}">
+    <div class="section">
+      <img alt="icon" />
+    </div>
+    <div class="info">
+      <span class="name">{{ name }}</span>
+      <span class="localization">{{ localization }}</span>
+    </div>
+  </div>
+  <button
+    *ngIf="canToggle"
+    class="btn floating"
+    [ngClass]="{
         'active': isOn,
       }"
-      (click)="toggleDevice()"
-    >
-      <ion-icon name="power-sharp"></ion-icon>
-    </button>
-  </div>
-  <div class="info">
-    <span class="name">{{ name }}</span>
-    <span class="localization">{{ localization }}</span>
-  </div>
+    (click)="toggleDevice()"
+  >
+    <ion-icon name="power-sharp"></ion-icon>
+  </button>
 </div>

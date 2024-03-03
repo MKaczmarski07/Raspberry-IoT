@@ -8,27 +8,18 @@ import { environment } from 'src/environments/environment';
   providedIn: 'root',
 })
 export class GpioService {
-  // Service used to communicate with the GPIO REST API
+  // Service to communicate with the REST API used to control the GPIO pins on the Raspberry Pi
 
   constructor(private http: HttpClient) {}
 
-  handleRGB(
-    diode_number: number,
-    isOn: boolean,
-    color: number[] = [255, 255, 255]
-  ) {
+  handleRGB(diodeID: number, isOn: boolean, color: number[] = [255, 255, 255]) {
     return this.http
       .post(`http://${environment.RASPBERRY_PI_IP}:5000/rgb`, {
-        diode_number: diode_number,
+        diode_id: diodeID,
         is_on: isOn,
         color: color,
       })
-      .pipe(
-        catchError(this.handleError),
-        tap((response) => {
-          console.log(response);
-        })
-      );
+      .pipe(catchError(this.handleError));
   }
 
   getTemperatureAndHumidity() {
@@ -44,15 +35,11 @@ export class GpioService {
       .post(`http://${environment.RASPBERRY_PI_IP}:5000/detect_motion`, {
         is_allowed: isAllowed,
       })
-      .pipe(
-        catchError(this.handleError),
-        tap((response) => {
-          console.log(response);
-        })
-      );
+      .pipe(catchError(this.handleError));
   }
 
   private handleError(errorRes: HttpErrorResponse) {
+    // if the request fails, return message - "can't connect to the server"
     return throwError(errorRes);
   }
 }

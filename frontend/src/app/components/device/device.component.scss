@@ -7,3 +7,14 @@
     opacity: 0.6;
   }
 }
+
+.overlay {
+  position: relative;
+
+  .floating {
+    position: absolute;
+    top: 1rem;
+    right: 1rem;
+    z-index: 10;
+  }
+}

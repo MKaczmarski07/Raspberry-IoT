@@ -1,5 +1,5 @@
 import { Component, OnInit, Input } from '@angular/core';
-import { GpioService } from 'src/app/data-access/gpio.service';
+import { RgbService } from 'src/app/shared/rgb.service';
 
 @Component({
   selector: 'app-device',
@@ -8,29 +8,25 @@ import { GpioService } from 'src/app/data-access/gpio.service';
 })
 export class DeviceComponent implements OnInit {
   @Input() canToggle = false;
-  @Input() name: any;
-  @Input() localization: any;
-  @Input() diodeNumber = 0;
+  @Input() name: string = '';
+  @Input() localization: string = '';
+  @Input() type: '' | 'lamp' | 'blinds' = '';
+  @Input() id = 0;
 
   isOn = false;
 
-  constructor(private gpioService: GpioService) {}
+  constructor(private rgbService: RgbService) {}
 
   ngOnInit() {}
 
   toggleDevice() {
     this.isOn = !this.isOn;
 
-    this.isOn
-      ? this.turnOnRGB(this.diodeNumber, [255, 255, 255])
-      : this.turnOffRGB(this.diodeNumber);
-  }
-
-  turnOnRGB(diodeNumber: number, color?: number[]) {
-    this.gpioService.handleRGB(diodeNumber, true, color).subscribe();
-  }
-
-  turnOffRGB(diodeNumber: number) {
-    this.gpioService.handleRGB(diodeNumber, false).subscribe();
+    // to do: get currently set color from database, then turn on the RGB diode
+    if (this.type === 'lamp') {
+      this.isOn
+        ? this.rgbService.turnOnRGB(this.id, [255, 255, 255])
+        : this.rgbService.turnOffRGB(this.id);
+    }
   }
 }

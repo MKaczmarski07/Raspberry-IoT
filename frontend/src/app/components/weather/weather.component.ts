@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, Output, EventEmitter } from '@angular/core';
 import { WeatherService } from 'src/app/data-access/weather.service';
 
 @Component({
@@ -7,10 +7,11 @@ import { WeatherService } from 'src/app/data-access/weather.service';
   styleUrls: ['./weather.component.scss'],
 })
 export class WeatherComponent implements OnInit {
-  city = 'Lodaing...';
+  city = '';
   country = '';
   temperature = '0';
-  weather = 'Lodaing...';
+  weather = '';
+  @Output() weatherDataLoaded = new EventEmitter<boolean>();
 
   constructor(private weatherService: WeatherService) {}
 
@@ -22,10 +23,10 @@ export class WeatherComponent implements OnInit {
   async getWeather() {
     const weatherObservable = await this.weatherService.getWeather();
     weatherObservable.subscribe((data: any) => {
-      console.log(data);
       this.country = data.sys.country;
       this.temperature = (data.main.temp - 273.15).toFixed(0);
       this.weather = data.weather[0].main;
+      this.weatherDataLoaded.emit(true);
     });
   }
 

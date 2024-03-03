@@ -1,3 +1,13 @@
-<p>
-  device-details works!
-</p>
+<ion-toolbar>
+  <ion-buttons slot="start">
+    <ion-button routerLink="/tabs/home">
+      <ion-icon name="arrow-back"></ion-icon>
+    </ion-button>
+  </ion-buttons>
+  <ion-title>Device Name</ion-title>
+</ion-toolbar>
+<ion-content>
+  <div class="main-content">
+    <app-color-picker *ngIf="type === 'lamp'"></app-color-picker>
+  </div>
+</ion-content>

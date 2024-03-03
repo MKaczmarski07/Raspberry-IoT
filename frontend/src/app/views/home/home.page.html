@@ -1,38 +1,45 @@
 <ion-toolbar>
   <ion-title>My Home</ion-title>
-  <!-- <ion-buttons slot="end">
-    <ion-button>
-      <ion-icon name="settings-outline"></ion-icon>
-    </ion-button>
-  </ion-buttons> -->
 </ion-toolbar>
 
 <ion-content>
   <div class="main-content">
     <div class="sensor-info-container">
       <div class="wrapper sensor-info">
+        <img src="../../../assets/images/home-temp.svg" alt="temperature" />
         <span>{{currentTemperature}}°C</span>
       </div>
       <div class="wrapper sensor-info">
+        <img src="../../../assets/images/home-humidity.svg" alt="temperature" />
         <span>{{currentHumidity}}%</span>
       </div>
     </div>
-    <app-weather></app-weather>
+    <app-weather (weatherDataLoaded)="weatherDataLoaded = true"></app-weather>
     <span class="title">All Devices</span>
     <div class="devices">
       <app-device
         [canToggle]="true"
-        [name]="'Lamp 1'"
+        [name]="'Lamp Model A'"
         [localization]="'Living room'"
-        [diodeNumber]="1"
+        [type]="'lamp'"
+        [id]="1"
       ></app-device>
       <app-device
         [canToggle]="true"
-        [name]="'Lamp 2'"
+        [name]="'Lamp Model B'"
         [localization]="'Living room'"
-        [diodeNumber]="2"
+        [type]="'lamp'"
+        [id]="2"
       ></app-device>
-      <app-device [name]="'Lamp 3'" [localization]="'Living room'"></app-device>
+      <app-device
+        [name]="'Roller Blind'"
+        [localization]="'Kitchen'"
+        [type]="'blinds'"
+        [id]="3"
+      ></app-device>
     </div>
+  </div>
+  <div *ngIf="!sensorDataLoaded || !weatherDataLoaded" class="spinner-wrapper">
+    <ion-spinner name="crescent"></ion-spinner>
   </div>
 </ion-content>
