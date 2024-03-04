@@ -8,10 +8,10 @@ export class RgbService {
   constructor(private gpioService: GpioService) {}
 
   turnOnRGB(diodeID: number, color?: number[]) {
-    this.gpioService.handleRGB(diodeID, true, color).subscribe();
+    this.gpioService.handleRGB(diodeID, 'on', color).subscribe();
   }
 
   turnOffRGB(diodeID: number) {
-    this.gpioService.handleRGB(diodeID, false).subscribe();
+    this.gpioService.handleRGB(diodeID, 'off').subscribe();
   }
 }

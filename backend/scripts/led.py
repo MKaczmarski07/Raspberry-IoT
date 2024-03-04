@@ -3,11 +3,12 @@ import time
 
 GPIO.setmode(GPIO.BCM)
 GPIO.setwarnings(False)
-GPIO.setup(16,GPIO.OUT)
+Led_pin = 16
+GPIO.setup(Led_pin,GPIO.OUT)
 
 def led_on():
-    GPIO.output(16,GPIO.HIGH)
+    GPIO.output(Led_pin,GPIO.HIGH)
 
 def led_off():
-    GPIO.output(16,GPIO.LOW)
+    GPIO.output(Led_pin,GPIO.LOW)
     

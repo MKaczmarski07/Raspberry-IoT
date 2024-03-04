@@ -12,11 +12,11 @@ export class GpioService {
 
   constructor(private http: HttpClient) {}
 
-  handleRGB(diodeID: number, isOn: boolean, color: number[] = [255, 255, 255]) {
+  handleRGB(diodeID: number, state: string, color: number[] = [255, 255, 255]) {
     return this.http
       .post(`http://${environment.RASPBERRY_PI_IP}:5000/rgb`, {
         diode_id: diodeID,
-        is_on: isOn,
+        state: state,
         color: color,
       })
       .pipe(catchError(this.handleError));

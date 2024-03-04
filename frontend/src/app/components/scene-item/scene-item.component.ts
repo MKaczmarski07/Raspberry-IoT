@@ -51,8 +51,8 @@ export class SceneItemComponent implements OnInit {
   setScene(sceneType: string) {
     const colorOne = this.scenes.get(sceneType)![0];
     const colorTwo = this.scenes.get(sceneType)![1];
-    this.gpioService.handleRGB(1, true, colorOne).subscribe();
-    this.gpioService.handleRGB(2, true, colorTwo).subscribe();
+    this.gpioService.handleRGB(1, 'on', colorOne).subscribe();
+    this.gpioService.handleRGB(2, 'on', colorTwo).subscribe();
   }
 
   transfromSceneName(name: string) {

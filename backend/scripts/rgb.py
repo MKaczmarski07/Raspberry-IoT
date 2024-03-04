@@ -24,7 +24,7 @@ class Led_rgb(object):
         self.led_red.ChangeDutyCycle(int((r*100)/255))
         self.led_green.ChangeDutyCycle(int((g*100)/255))
         self.led_blue.ChangeDutyCycle(int((b*100)/255))
-        
+
     def start_pwn(self):
         self.led_red.start(0) 
         self.led_green.start(0)

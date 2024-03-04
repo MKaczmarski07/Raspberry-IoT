@@ -1,9 +1,9 @@
 import RPi.GPIO as GPIO
-from date_and_time import get_date, get_time
-from alarm import alarm
-from timer import RepeatedTimer
 from time import sleep
-from led import led_on, led_off
+from .date_and_time import get_date, get_time
+from .alarm import alarm
+from .timer import RepeatedTimer
+from .led import led_on, led_off
 
 
 GPIO.setmode(GPIO.BCM)
@@ -11,7 +11,7 @@ GPIO.setwarnings(False)
 PIR_PIN = 24
 GPIO.setup(PIR_PIN, GPIO.IN)
 
-    
+
 class SecuritySystem(object):
     def __init__(self, interval, duration):
         self.is_running = False

@@ -1,9 +1,13 @@
-from flask import Flask, request, jsonify, json
+from flask import Flask, request, jsonify, json, g
 from flask_cors import CORS
 from time import sleep
-from temperature_and_humidity import get_sensor_data
-from security_system import SecuritySystem
-from rgb import Led_rgb
+import sqlite3
+import os
+
+from scripts.temperature_and_humidity import get_sensor_data
+from scripts.security_system import SecuritySystem
+from scripts.rgb import Led_rgb
+from database.db import get_db, get_state, update_state
 
 
 app = Flask(__name__)
@@ -13,7 +17,8 @@ CORS(app)
 # create instances of object type elements
 security_system = SecuritySystem(0.2,4)
 rgb_1 = Led_rgb(17,27,22)
-rgb_leds = [rgb_1]
+rgb_2 = Led_rgb(5,6,26)
+rgb_leds = [rgb_1, rgb_2]
 
 
 @app.route("/temperature_and_humidity", methods=["GET"])
@@ -41,13 +46,13 @@ def detect_motion():
 def handle_rgb():
     data = json.loads(request.data)
     
-    if data.get("diode_number") is None:
-        return jsonify({"error": f"Error: Missing 'diode_number' key in JSON data."}), 400
-    diode_number = data.get("diode_number")
+    if data.get("diode_id") is None:
+        return jsonify({"error": f"Error: Missing 'diode_id' key in JSON data."}), 400
+    diode_id = data.get("diode_id")
     
-    if data.get("is_on") is None:
+    if data.get("state") is None:
         return jsonify({"error": f"Error: Missing 'state' key in JSON data."}), 400
-    is_on = data.get("is_on")
+    state = data.get("state")
     
     color = data.get("color")
     red = 255
@@ -59,15 +64,37 @@ def handle_rgb():
         green = color[1]
         blue = color[2]
 
-    def handle_state(diode):
-        if is_on:
+    def handle_color_change(diode):
+        if state == 'on':
             diode.set_color(red, green, blue)
         else:
             diode.stop_pwn()
+            
+    diode_ref = rgb_leds[diode_id-1]
+    handle_color_change(diode_ref)
     
-    handle_state(rgb_leds[diode_number-1])
+    # even after str() it is reference to the object, not a string !
+    print(diode_ref)
+    update_state('rgb_1', state)
+    test = get_state('rgb_1')
+    print(test)
             
     return jsonify('rgb')
+
+
+@app.route("/blinds", methods=["POST"])
+def handle_blinds():
+    data = json.loads(request.data)
+    
+    if data.get("covering") is None:
+        return jsonify({"error": f"Error: Missing 'covering' key in JSON data."}), 400
+    covering = data.get("is_on")
+    
+    covering = data.get("covering")
+    return jsonify(covering)
+
+
+
 
 
 if __name__ == "__main__":
