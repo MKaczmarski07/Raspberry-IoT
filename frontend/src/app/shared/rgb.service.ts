@@ -7,11 +7,19 @@ import { GpioService } from 'src/app/data-access/gpio.service';
 export class RgbService {
   constructor(private gpioService: GpioService) {}
 
-  turnOnRGB(diodeID: number, color?: number[]) {
-    this.gpioService.handleRGB(diodeID, 'on', color).subscribe();
+  turnOnRGB(uniqueDeviceAdress: string, color?: number[]) {
+    this.gpioService.handleRGB(uniqueDeviceAdress, 'on', color).subscribe();
   }
 
-  turnOffRGB(diodeID: number) {
-    this.gpioService.handleRGB(diodeID, 'off').subscribe();
+  turnOffRGB(uniqueDeviceAdress: string) {
+    this.gpioService.handleRGB(uniqueDeviceAdress, 'off').subscribe();
+  }
+
+  getColor(uniqueDeviceAdress: string) {
+    return this.gpioService.getDeviceAttributes(uniqueDeviceAdress);
+  }
+
+  transformColorResponse(response: Array<Array<number>>) {
+    return JSON.parse('{' + response[0][0] + '}').color;
   }
 }

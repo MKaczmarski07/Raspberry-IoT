@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component } from '@angular/core';
 import { GpioService } from 'src/app/data-access/gpio.service';
 import { Subscription } from 'rxjs';
 import { Router } from '@angular/router';
@@ -8,7 +8,7 @@ import { Router } from '@angular/router';
   templateUrl: 'home.page.html',
   styleUrls: ['home.page.scss'],
 })
-export class HomePage implements OnInit {
+export class HomePage {
   currentTemperature: number | null = null;
   currentHumidity: number | null = null;
   temperatureAndHumiditySub: Subscription | undefined;
@@ -18,7 +18,7 @@ export class HomePage implements OnInit {
 
   constructor(private gpioService: GpioService, private router: Router) {}
 
-  ngOnInit() {
+  ionViewWillEnter() {
     this.getTemperatureAndHumidity();
   }
 

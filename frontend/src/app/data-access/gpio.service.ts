@@ -12,10 +12,30 @@ export class GpioService {
 
   constructor(private http: HttpClient) {}
 
-  handleRGB(diodeID: number, state: string, color: number[] = [255, 255, 255]) {
+  getDeviceState(uniqueDeviceAdress: string) {
+    return this.http
+      .get(
+        `http://${environment.RASPBERRY_PI_IP}:5000/device_state?device_adress=${uniqueDeviceAdress}`
+      )
+      .pipe(catchError(this.handleError));
+  }
+
+  getDeviceAttributes(uniqueDeviceAdress: string) {
+    return this.http
+      .get(
+        `http://${environment.RASPBERRY_PI_IP}:5000/device_attributes?device_adress=${uniqueDeviceAdress}`
+      )
+      .pipe(catchError(this.handleError));
+  }
+
+  handleRGB(
+    uniqueDeviceAdress: string,
+    state: string,
+    color: number[] = [255, 255, 255]
+  ) {
     return this.http
       .post(`http://${environment.RASPBERRY_PI_IP}:5000/rgb`, {
-        diode_id: diodeID,
+        device_adress: uniqueDeviceAdress,
         state: state,
         color: color,
       })

@@ -7,7 +7,7 @@ import os
 from scripts.temperature_and_humidity import get_sensor_data
 from scripts.security_system import SecuritySystem
 from scripts.rgb import Led_rgb
-from database.db import get_db, get_state, update_state
+from database.db import get_state, update_state, get_attributes, update_attributes
 
 
 app = Flask(__name__)
@@ -18,7 +18,19 @@ CORS(app)
 security_system = SecuritySystem(0.2,4)
 rgb_1 = Led_rgb(17,27,22)
 rgb_2 = Led_rgb(5,6,26)
-rgb_leds = [rgb_1, rgb_2]
+rgb_leds = {'rgb_1': rgb_1, 'rgb_2': rgb_2} # {device_adress: object Ref}
+
+
+@app.route("/device_state", methods=["GET"])
+def get_device_state():
+    device_adress = request.args.get("device_adress")
+    return jsonify(get_state(device_adress))
+
+
+@app.route("/device_attributes", methods=["GET"])
+def get_device_attributes():
+    device_adress = request.args.get("device_adress")
+    return jsonify(get_attributes(device_adress))
 
 
 @app.route("/temperature_and_humidity", methods=["GET"])
@@ -46,9 +58,9 @@ def detect_motion():
 def handle_rgb():
     data = json.loads(request.data)
     
-    if data.get("diode_id") is None:
-        return jsonify({"error": f"Error: Missing 'diode_id' key in JSON data."}), 400
-    diode_id = data.get("diode_id")
+    if data.get("device_adress") is None:
+        return jsonify({"error": f"Error: Missing 'device_name' key in JSON data."}), 400
+    device_adress = data.get("device_adress")
     
     if data.get("state") is None:
         return jsonify({"error": f"Error: Missing 'state' key in JSON data."}), 400
@@ -67,18 +79,14 @@ def handle_rgb():
     def handle_color_change(diode):
         if state == 'on':
             diode.set_color(red, green, blue)
+            update_attributes(device_adress, f'"color": [{red},{green},{blue}]')
         else:
             diode.stop_pwn()
             
-    diode_ref = rgb_leds[diode_id-1]
+    diode_ref = rgb_leds[device_adress]
     handle_color_change(diode_ref)
+    update_state(device_adress, state)
     
-    # even after str() it is reference to the object, not a string !
-    print(diode_ref)
-    update_state('rgb_1', state)
-    test = get_state('rgb_1')
-    print(test)
-            
     return jsonify('rgb')
 
 

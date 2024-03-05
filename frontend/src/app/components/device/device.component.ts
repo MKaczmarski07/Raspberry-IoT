@@ -1,5 +1,7 @@
 import { Component, OnInit, Input } from '@angular/core';
 import { RgbService } from 'src/app/shared/rgb.service';
+import { GpioService } from 'src/app/data-access/gpio.service';
+import { Router, NavigationStart } from '@angular/router';
 
 @Component({
   selector: 'app-device',
@@ -8,25 +10,64 @@ import { RgbService } from 'src/app/shared/rgb.service';
 })
 export class DeviceComponent implements OnInit {
   @Input() canToggle = false;
-  @Input() name: string = '';
+  @Input() displayedName: string = '';
+  @Input() uniqueDeviceAdress: string = '';
   @Input() localization: string = '';
   @Input() type: '' | 'lamp' | 'blinds' = '';
   @Input() id = 0;
 
+  state: 'on' | 'off' = 'off';
   isOn = false;
 
-  constructor(private rgbService: RgbService) {}
+  constructor(
+    private rgbService: RgbService,
+    private gpioService: GpioService,
+    private router: Router
+  ) {
+    router.events.subscribe((event) => {
+      if (event instanceof NavigationStart && event.url === '/tabs/home') {
+        this.getState();
+      }
+    });
+  }
 
-  ngOnInit() {}
+  ngOnInit() {
+    this.getState();
+  }
+
+  getState() {
+    if (this.canToggle) {
+      this.gpioService
+        .getDeviceState(this.uniqueDeviceAdress)
+        .subscribe((state: any) => {
+          this.state = state[0][0];
+          this.handleDeviceStateChange();
+        });
+    }
+  }
 
   toggleDevice() {
-    this.isOn = !this.isOn;
+    this.state = this.state === 'on' ? 'off' : 'on';
+    this.handleDeviceStateChange();
+  }
 
-    // to do: get currently set color from database, then turn on the RGB diode
+  handleLamp() {
+    if (this.state === 'on') {
+      this.rgbService
+        .getColor(this.uniqueDeviceAdress)
+        .subscribe((response: any) => {
+          const color = this.rgbService.transformColorResponse(response);
+          this.rgbService.turnOnRGB(this.uniqueDeviceAdress, color);
+        });
+    }
+    if (this.state === 'off') {
+      this.rgbService.turnOffRGB(this.uniqueDeviceAdress);
+    }
+  }
+
+  handleDeviceStateChange() {
     if (this.type === 'lamp') {
-      this.isOn
-        ? this.rgbService.turnOnRGB(this.id, [255, 255, 255])
-        : this.rgbService.turnOffRGB(this.id);
+      this.handleLamp();
     }
   }
 }

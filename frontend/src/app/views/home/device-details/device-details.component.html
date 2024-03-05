@@ -4,10 +4,17 @@
       <ion-icon name="arrow-back"></ion-icon>
     </ion-button>
   </ion-buttons>
-  <ion-title>Device Name</ion-title>
+  <ion-title>{{ displayedName }}</ion-title>
 </ion-toolbar>
 <ion-content>
   <div class="main-content">
-    <app-color-picker *ngIf="type === 'lamp'"></app-color-picker>
+    <app-color-picker
+      *ngIf="type === 'lamp'"
+      [uniqueDeviceAdress]="uniqueDeviceAdress"
+      (colorDataLoaded)="isLoaded = $event"
+    ></app-color-picker>
+  </div>
+  <div *ngIf="!isLoaded" class="spinner-wrapper">
+    <ion-spinner name="crescent"></ion-spinner>
   </div>
 </ion-content>

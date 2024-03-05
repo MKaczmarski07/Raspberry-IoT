@@ -1,21 +1,28 @@
-import { Component, OnInit } from '@angular/core';
-import { Router } from '@angular/router';
+import { Component } from '@angular/core';
+import { ActivatedRoute, Router } from '@angular/router';
 
 @Component({
   selector: 'app-device-details',
   templateUrl: './device-details.component.html',
   styleUrls: ['./device-details.component.scss'],
 })
-export class DeviceDetailsComponent implements OnInit {
+export class DeviceDetailsComponent {
+  isLoaded = false;
   type: string = '';
+  displayedName: string = '';
+  uniqueDeviceAdress: string = '';
 
-  constructor(private router: Router) {}
+  constructor(private route: ActivatedRoute, private router: Router) {}
 
-  ngOnInit() {
-    this.type = this.getType();
+  ionViewWillEnter() {
+    this.getQueryParams();
   }
 
-  getType(): string {
-    return this.router.url.split('/').slice(-2, -1)[0];
+  getQueryParams() {
+    this.route.queryParams.subscribe((params) => {
+      this.displayedName = params['displayedName'];
+      this.uniqueDeviceAdress = params['uniqueDeviceAdress'];
+      this.type = params['type'];
+    });
   }
 }

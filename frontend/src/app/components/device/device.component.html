@@ -1,10 +1,18 @@
 <div class="overlay">
-  <div class="wrapper" routerLink="device/{{ type }}/{{ id }}">
+  <div
+    class="wrapper"
+    routerLink="device"
+    [queryParams]="{
+      uniqueDeviceAdress: uniqueDeviceAdress,
+      displayedName: displayedName,
+      type: type,
+    }"
+  >
     <div class="section">
       <img alt="icon" />
     </div>
     <div class="info">
-      <span class="name">{{ name }}</span>
+      <span class="name">{{ displayedName }}</span>
       <span class="localization">{{ localization }}</span>
     </div>
   </div>
@@ -12,7 +20,7 @@
     *ngIf="canToggle"
     class="btn floating"
     [ngClass]="{
-        'active': isOn,
+        'active': state === 'on',
       }"
     (click)="toggleDevice()"
   >
