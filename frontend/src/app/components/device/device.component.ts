@@ -14,7 +14,7 @@ export class DeviceComponent implements OnInit {
   @Input() uniqueDeviceAdress: string = '';
   @Input() localization: string = '';
   @Input() type: '' | 'lamp' | 'blinds' = '';
-  @Input() id = 0;
+  iconSrc = '';
 
   state: 'on' | 'off' = 'off';
   isOn = false;
@@ -33,6 +33,7 @@ export class DeviceComponent implements OnInit {
 
   ngOnInit() {
     this.getState();
+    this.setIcon();
   }
 
   getState() {
@@ -69,5 +70,13 @@ export class DeviceComponent implements OnInit {
     if (this.type === 'lamp') {
       this.handleLamp();
     }
+  }
+
+  setIcon() {
+    const sources = new Map([
+      ['lamp', '../../../assets/images/icons/lamp.svg'],
+      ['blinds', '../../../assets/images/icons/blinds.svg'],
+    ]);
+    this.iconSrc = sources.get(this.type) || '';
   }
 }

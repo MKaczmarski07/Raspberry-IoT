@@ -2,4 +2,60 @@
   <ion-title>Network</ion-title>
 </ion-toolbar>
 
-<ion-content> </ion-content>
+<ion-content>
+  <div class="main-content">
+    <div class="wrapper">
+      <div class="section">
+        <div class="flex-left-section">
+          <img
+            alt="server-icon"
+            class="server-icon"
+            src="../../../assets/images/icons/raspberry.svg"
+          />
+          <div class="server-attributes">
+            <span class="section-title">Raspberry</span>
+            <span class="server-ip">{{ipAddress}}</span>
+          </div>
+        </div>
+        <button class="btn">
+          <ion-icon name="settings-outline"></ion-icon>
+        </button>
+      </div>
+      <div class="flex-left-section">
+        <div
+          class="indicator"
+          [ngClass]="{
+          'online': serverStatus === 'online',
+          'offline': serverStatus === 'offline'
+        
+        }"
+        ></div>
+        <span class="server-status">{{serverStatusText}}</span>
+      </div>
+    </div>
+    <div class="wrapper">
+      <div class="flex-left-section">
+        <ion-icon
+          class="info-icon"
+          name="information-circle-outline"
+        ></ion-icon>
+        <span class="section-title">Troubleshooting</span>
+      </div>
+      <div>
+        <p class="troubleshooting-text">
+          If you are experiencing problems with the connection, please check the
+          following:
+        </p>
+        <ul class="troubleshooting-list">
+          <li>Check whether the entered server IP address is correct.</li>
+          <li>
+            Check if your device and server are in the same local network.
+          </li>
+          <li>
+            Check if the server is connected to power and working properly.
+          </li>
+        </ul>
+      </div>
+    </div>
+  </div>
+</ion-content>

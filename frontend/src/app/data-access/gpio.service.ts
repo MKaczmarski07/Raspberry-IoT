@@ -12,6 +12,12 @@ export class GpioService {
 
   constructor(private http: HttpClient) {}
 
+  checkConnection() {
+    return this.http
+      .get(`http://${environment.RASPBERRY_PI_IP}:5000/connection`)
+      .pipe(catchError(this.handleError));
+  }
+
   getDeviceState(uniqueDeviceAdress: string) {
     return this.http
       .get(

@@ -6,11 +6,17 @@
   <div class="main-content">
     <div class="sensor-info-container">
       <div class="wrapper sensor-info">
-        <img src="../../../assets/images/home-temp.svg" alt="temperature" />
+        <img
+          src="../../../assets/images/icons/home-temp.svg"
+          alt="temperature"
+        />
         <span>{{currentTemperature}}°C</span>
       </div>
       <div class="wrapper sensor-info">
-        <img src="../../../assets/images/home-humidity.svg" alt="temperature" />
+        <img
+          src="../../../assets/images/icons/home-humidity.svg"
+          alt="temperature"
+        />
         <span>{{currentHumidity}}%</span>
       </div>
     </div>
@@ -23,7 +29,13 @@
         [uniqueDeviceAdress]="'rgb_1'"
         [localization]="'Living room'"
         [type]="'lamp'"
-        [id]="1"
+      ></app-device>
+      <app-device
+        [canToggle]="true"
+        [displayedName]="'Roller Blind'"
+        [uniqueDeviceAdress]="'blinds_1'"
+        [localization]="'Kitchen'"
+        [type]="'blinds'"
       ></app-device>
       <app-device
         [canToggle]="true"
@@ -31,14 +43,6 @@
         [uniqueDeviceAdress]="'rgb_2'"
         [localization]="'Living room'"
         [type]="'lamp'"
-        [id]="2"
-      ></app-device>
-      <app-device
-        [displayedName]="'Roller Blind'"
-        [uniqueDeviceAdress]="'blinds_1'"
-        [localization]="'Kitchen'"
-        [type]="'blinds'"
-        [id]="3"
       ></app-device>
     </div>
   </div>
