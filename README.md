@@ -33,24 +33,14 @@ The main goal of the project is to develop a comprehensive and user-friendly sma
 | ![App dark theme)] | ![App light theme)
 
 # Table of contents
-- [Smart Home Management Platform](#smart-home-management-platform)
-  - [About The Project](#about-the-project)
-  - [Features](#features)
-- [Table of contents](#table-of-contents)
-  - [Part list](#part-list)
-  - [Hardware Architecture](#hardware-architecture)
-  - [Software Architecture](#software-architecture)
-  - [Used Technologies](#used-technologies)
-    - [Programming Languages](#programming-languages)
-    - [Frameworks \& Extensions](#frameworks--extensions)
-    - [Libraries](#libraries)
-    - [Databases](#databases)
-  - [Storing data and managing states](#storing-data-and-managing-states)
-  - [Network Communication](#network-communication)
-  - [Setup the Raspberry Pi](#setup-the-raspberry-pi)
-    - [First steps](#first-steps)
-    - [Safe shutdown](#safe-shutdown)
-  - [Expansion Possibilities](#expansion-possibilities)
+- [Part list](#part-list)
+- [Hardware Architecture](#hardware-architecture)
+- [Software Architecture](#software-architecture)
+- [Used Technologies](#used-technologies)
+- [Storing data and managing states](#storing-data-and-managing-states)
+- [Network Communication](#network-communication)
+- [Setup the Raspberry Pi](#setup-the-raspberry-pi)
+- [Expansion Possibilities](#expansion-possibilities)
 
 
 <a name="part-list"></a>
@@ -79,7 +69,8 @@ The main goal of the project is to develop a comprehensive and user-friendly sma
 
 <a name="software-architecture"></a>
 ## Software Architecture
-![software architecture](https://github.com/MKaczmarski07/smart-home/assets/95142305/d712a67f-6669-4db8-b6d7-ec32ff82bbaf)
+![software architecture](https://github.com/MKaczmarski07/smart-home/assets/95142305/bd87a263-d2e2-4960-9b6a-05c58f83a1b8)
+
 
 <a name="used-technologies"></a>
 ## Used Technologies
