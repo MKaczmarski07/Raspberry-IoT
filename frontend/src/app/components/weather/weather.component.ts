@@ -12,6 +12,7 @@ export class WeatherComponent implements OnInit {
   temperature = '0';
   weather = '';
   @Output() weatherDataLoaded = new EventEmitter<boolean>();
+  @Output() weatherDataFailed = new EventEmitter<boolean>();
 
   constructor(private weatherService: WeatherService) {}
 
@@ -22,12 +23,17 @@ export class WeatherComponent implements OnInit {
 
   async getWeather() {
     const weatherObservable = await this.weatherService.getWeather();
-    weatherObservable.subscribe((data: any) => {
-      this.country = data.sys.country;
-      this.temperature = (data.main.temp - 273.15).toFixed(0);
-      this.weather = data.weather[0].main;
-      this.weatherDataLoaded.emit(true);
-    });
+    weatherObservable.subscribe(
+      (data: any) => {
+        this.country = data.sys.country;
+        this.temperature = (data.main.temp - 273.15).toFixed(0);
+        this.weather = data.weather[0].main;
+        this.weatherDataLoaded.emit(true);
+      },
+      (error) => {
+        this.weatherDataFailed.emit(true);
+      }
+    );
   }
 
   async getCityName() {

@@ -1,0 +1,13 @@
+<div class="alert-wrapper" *ngIf="isAlertVisible">
+  <div [@alert] class="alert">
+    <ion-icon name="alert-circle-outline" class="alert-icon"></ion-icon>
+    <p class="alert-text">
+      {{ alertMessage }}
+    </p>
+    <button (click)="hideAlert()" class="btn alert-btn">
+      <span>Close</span>
+    </button>
+  </div>
+
+  <div [@background] class="alert-background"></div>
+</div>

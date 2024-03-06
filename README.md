@@ -33,11 +33,24 @@ The main goal of the project is to develop a comprehensive and user-friendly sma
 | ![App dark theme)] | ![App light theme)
 
 # Table of contents
-- [Part list](#part-list)
-- [Hardware Architecture](#hardware-architecture)
-- [Software Architecture](#software-architecture)
-- [Used Technologies](#used-technologies)
-- [Setup the Raspberry Pi](#setup-the-raspberry-pi)
+- [Smart Home Management Platform](#smart-home-management-platform)
+  - [About The Project](#about-the-project)
+  - [Features](#features)
+- [Table of contents](#table-of-contents)
+  - [Part list](#part-list)
+  - [Hardware Architecture](#hardware-architecture)
+  - [Software Architecture](#software-architecture)
+  - [Used Technologies](#used-technologies)
+    - [Programming Languages](#programming-languages)
+    - [Frameworks \& Extensions](#frameworks--extensions)
+    - [Libraries](#libraries)
+    - [Databases](#databases)
+  - [Storing data and managing states](#storing-data-and-managing-states)
+  - [Network Communication](#network-communication)
+  - [Setup the Raspberry Pi](#setup-the-raspberry-pi)
+    - [First steps](#first-steps)
+    - [Safe shutdown](#safe-shutdown)
+  - [Expansion Possibilities](#expansion-possibilities)
 
 
 <a name="part-list"></a>
@@ -66,24 +79,51 @@ The main goal of the project is to develop a comprehensive and user-friendly sma
 
 <a name="software-architecture"></a>
 ## Software Architecture
+![software architecture](https://github.com/MKaczmarski07/smart-home/assets/95142305/d712a67f-6669-4db8-b6d7-ec32ff82bbaf)
 
 <a name="used-technologies"></a>
 ## Used Technologies
 
+### Programming Languages
+[TypeScript 🔗](https://typescriptlang.org)<br>
+[Python 3 🔗](https://www.python.org)<br>
+
+### Frameworks & Extensions
 [Ionic 🔗](https://ionicframework.com)<br>
 [Angular 17 🔗](https://angular.dev)<br>
-[TypeScript 🔗](https://typescriptlang.org)<br>
 [Sass 🔗](https://sass-lang.com)<br>
-[Python 3 🔗](https://www.python.org)<br>
 [Flask 🔗](https://flask.palletsprojects.com/en/3.0.x/)<br>
+
+### Libraries
+[Iro.Js 🔗](https://iro.js.org)<br>
 [Flask CORS 🔗](https://flask-cors.readthedocs.io/en/latest/)<br>
 [Adafruit CircuitPython DHT 🔗](https://docs.circuitpython.org/projects/dht/en/latest/)<br>
+
+### Databases
+[SQLite 🔗](https://www.sqlite.org)<br>
+
 <!-- 
 [Docker 🔗]()<br>
 Node.js min v18.13 !!!
 [🔗]()<br>
 … -->
 
+<a name="database"></a>
+## Storing data and managing states
+All states and attributes are stored in the database in a table named states. Every IoT device is represented by a unique address.
+
+| Field  | Type |
+| ------------- | ------------- |
+| id | INTEGER PRIMARY KEY |
+| adress | TEXT UNIQUE |
+| state | TEXT |
+| attributes | TEXT |
+
+<a name="network"></a>
+## Network Communication
+Communication between the user's application and the server ( Raspberry PI ) takes place in the local network ( LAN ). This is a common solution used in IoT systems. Local network ensures reliable and secure communication. Devices can communicate with each other without the need for an internet connection and unauthorized access is more difficult. <br/>
+
+Remote communication with the system via the Internet is also possible, e.g. by port forwarding. However, this solution requires an additional layer of security, including user authentication and protection against various types of external attacks.
 
 <a name="raspi"></a>
 ## Setup the Raspberry Pi
@@ -106,6 +146,8 @@ The raspberrypi microcomputer should not be turned off by immediately disconnect
 ```
 And wait until the green LED on the raspberry stops blinking
 
-
-
+<a name="expansion-possibilities"></a>
+## Expansion Possibilities
+- Due to the availability of funds, the project uses a wired connection to sensors and actuators, directly to the GPIO ports. In a full-scale home system, communication could take place wirelessly, e.g. via the ZigBee protocol or Bluetooth.
+- RGB LEDs can be replaced with a regular light bulb or an RGB bulb powered by the power grid. Such a bulb can be controlled using a relay that connects to the system wirelessly using a micro-controller such as ESP8266.
 

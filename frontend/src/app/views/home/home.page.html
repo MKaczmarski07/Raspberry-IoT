@@ -20,7 +20,10 @@
         <span>{{currentHumidity}}%</span>
       </div>
     </div>
-    <app-weather (weatherDataLoaded)="weatherDataLoaded = true"></app-weather>
+    <app-weather
+      (weatherDataLoaded)="weatherDataLoaded = true"
+      (weatherDataFailed)="weatherDataFailed"
+    ></app-weather>
     <span class="title">All Devices</span>
     <div class="devices">
       <app-device
@@ -46,7 +49,11 @@
       ></app-device>
     </div>
   </div>
-  <div *ngIf="!sensorDataLoaded || !weatherDataLoaded" class="spinner-wrapper">
+  <div *ngIf="isLoaderVisible" class="spinner-wrapper">
     <ion-spinner name="crescent"></ion-spinner>
   </div>
+  <app-alert
+    [isAlertVisible]="isAllertVisible"
+    [alertMessage]="alertMessage"
+  ></app-alert>
 </ion-content>
