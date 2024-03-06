@@ -7,6 +7,7 @@ import { WeatherComponent } from 'src/app/components/weather/weather.component';
 import { DeviceComponent } from 'src/app/components/device/device.component';
 import { ColorPickerComponent } from 'src/app/components/color-picker/color-picker.component';
 import { DeviceDetailsComponent } from './device-details/device-details.component';
+import { BlindsSettingsComponent } from 'src/app/components/blinds-settings/blinds-settings.component';
 import { AlertComponent } from 'src/app/components/alert/alert.component';
 
 import { HomePageRoutingModule } from './home-routing.module';
@@ -20,6 +21,7 @@ import { HomePageRoutingModule } from './home-routing.module';
     ColorPickerComponent,
     DeviceDetailsComponent,
     AlertComponent,
+    BlindsSettingsComponent,
   ],
 })
 export class HomePageModule {}

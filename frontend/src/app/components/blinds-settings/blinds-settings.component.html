@@ -1,0 +1,15 @@
+<div class="blinds-settings-container">
+  <span class="percent">{{ inputValue }}%</span>
+  <span class="range-input-title">Roller blinds extension percentage</span>
+  <input
+    type="range"
+    min="0"
+    max="100"
+    value="50"
+    class="range-input"
+    [(ngModel)]="inputValue"
+  />
+  <button class="btn-2" (click)="setBlindsPosition()">
+    <span>Save</span>
+  </button>
+</div>

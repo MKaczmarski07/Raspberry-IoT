@@ -21,6 +21,7 @@
     align-items: center;
     justify-content: center;
     width: calc(100% - 32px);
+    max-width: 25rem;
 
     .alert-icon {
       font-size: 2.5rem;
