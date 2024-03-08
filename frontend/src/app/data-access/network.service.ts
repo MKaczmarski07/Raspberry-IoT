@@ -1,14 +1,14 @@
 import { Injectable } from '@angular/core';
 import { HttpClient, HttpErrorResponse } from '@angular/common/http';
 import { catchError } from 'rxjs/operators';
-import { throwError } from 'rxjs';
+import { throwError, BehaviorSubject } from 'rxjs';
 import { environment } from 'src/environments/environment';
 
 @Injectable({
   providedIn: 'root',
 })
 export class NetworkService {
-  public connectionTestFailed = false;
+  public connectionTestFailed$ = new BehaviorSubject<boolean | null>(null);
 
   constructor(private http: HttpClient) {}
 
@@ -19,13 +19,12 @@ export class NetworkService {
   }
 
   checkConnection() {
-    this.connectionTestFailed = true;
     this.getConnectionInfo().subscribe(
       (response) => {
-        this.connectionTestFailed = false;
+        this.connectionTestFailed$.next(false);
       },
       (error) => {
-        this.connectionTestFailed = true;
+        this.connectionTestFailed$.next(true);
       }
     );
   }

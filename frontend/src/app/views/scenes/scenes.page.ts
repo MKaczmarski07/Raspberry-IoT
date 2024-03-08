@@ -1,5 +1,6 @@
 import { Component } from '@angular/core';
 import { NetworkService } from 'src/app/data-access/network.service';
+import { Subscription } from 'rxjs';
 
 @Component({
   selector: 'app-scenes',
@@ -7,14 +8,22 @@ import { NetworkService } from 'src/app/data-access/network.service';
   styleUrls: ['scenes.page.scss'],
 })
 export class ScenesPage {
+  networkSubscription: Subscription | undefined;
   isServerAvailable = false;
   isLoaderVisible = true;
   sceneStateChanged = false;
   constructor(private network: NetworkService) {}
 
   ionViewWillEnter() {
-    this.network.checkConnection();
-    this.handleLoader();
+    this.networkSubscription = this.network.connectionTestFailed$.subscribe(
+      (isFailed) => {
+        if (isFailed !== null) {
+          this.isServerAvailable = !isFailed;
+          this.isLoaderVisible = false;
+        }
+      }
+    );
+    console.log(this.networkSubscription);
   }
 
   handleSceneStateChange() {
@@ -24,17 +33,9 @@ export class ScenesPage {
     }, 10);
   }
 
-  handleLoader() {
-    const interval = setInterval(() => {
-      if (!this.network.connectionTestFailed) {
-        this.isServerAvailable = true;
-        clearInterval(interval);
-        this.isLoaderVisible = false;
-      }
-      if (this.network.connectionTestFailed) {
-        clearInterval(interval);
-        this.isLoaderVisible = false;
-      }
-    }, 300);
+  ionViewWillLeave() {
+    if (this.networkSubscription) {
+      this.networkSubscription.unsubscribe();
+    }
   }
 }

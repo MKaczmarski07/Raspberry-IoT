@@ -64,7 +64,6 @@ export class GpioService {
   }
 
   private handleError(errorRes: HttpErrorResponse) {
-    // if the request fails, return message - "can't connect to the server"
     return throwError(errorRes);
   }
 }

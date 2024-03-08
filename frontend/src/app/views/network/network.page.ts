@@ -1,6 +1,7 @@
 import { Component } from '@angular/core';
 import { NetworkService } from 'src/app/data-access/network.service';
 import { environment } from 'src/environments/environment';
+import { Subscription } from 'rxjs';
 
 @Component({
   selector: 'app-network',
@@ -11,12 +12,25 @@ export class NetworkPage {
   serverStatus: 'unknown' | 'offline' | 'online' = 'unknown';
   serverStatusText: string | undefined;
   ipAddress: string | undefined;
+  networkSubscription: Subscription | undefined;
 
   constructor(private network: NetworkService) {}
 
-  ionViewDidEnter() {
-    this.checkConnection();
+  ngOnInit() {
+    this.serverStatusText = this.setStatusText();
+  }
+
+  ionViewWillEnter() {
     this.ipAddress = environment.RASPBERRY_PI_IP;
+    this.networkSubscription = this.network.connectionTestFailed$.subscribe(
+      (isFailed) => {
+        if (isFailed !== null) {
+          this.serverStatus = isFailed ? 'offline' : 'online';
+          this.serverStatusText = this.setStatusText();
+        }
+      }
+    );
+    console.log(this.networkSubscription);
   }
 
   setStatusText() {
@@ -28,21 +42,13 @@ export class NetworkPage {
     return text.get(this.serverStatus);
   }
 
-  checkConnection() {
+  refresh() {
     this.serverStatus = 'unknown';
     this.serverStatusText = this.setStatusText();
     this.network.checkConnection();
-    const interval = setInterval(() => {
-      if (!this.network.connectionTestFailed) {
-        this.serverStatus = 'online';
-        this.serverStatusText = this.setStatusText();
-        clearInterval(interval);
-      }
-      if (this.network.connectionTestFailed) {
-        this.serverStatus = 'offline';
-        this.serverStatusText = this.setStatusText();
-        clearInterval(interval);
-      }
-    }, 300);
+  }
+
+  ionViewWillLeave() {
+    this.networkSubscription?.unsubscribe();
   }
 }

@@ -17,9 +17,14 @@
             <span class="server-ip">{{ipAddress}}</span>
           </div>
         </div>
-        <button class="btn">
-          <ion-icon name="settings-outline"></ion-icon>
-        </button>
+        <div class="flex-left-section">
+          <button class="btn" (click)="refresh()">
+            <ion-icon name="sync-outline"></ion-icon>
+          </button>
+          <button class="btn">
+            <ion-icon name="settings-outline"></ion-icon>
+          </button>
+        </div>
       </div>
       <div class="flex-left-section">
         <div

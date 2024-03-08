@@ -12,6 +12,8 @@ export class HomePage {
   currentTemperature: number = 0;
   currentHumidity: number = 0;
   temperatureAndHumiditySub: Subscription | undefined;
+  networkSubscription: Subscription | undefined;
+
   sensorDataFailed = false;
   weatherDataLoaded = false;
   weatherDataFailed = false;
@@ -26,7 +28,6 @@ export class HomePage {
   ) {}
 
   ionViewWillEnter() {
-    this.network.checkConnection();
     this.handleLoader();
   }
 
@@ -49,31 +50,22 @@ export class HomePage {
   }
 
   handleLoader() {
-    const interval = setInterval(() => {
-      if (!this.network.connectionTestFailed) {
-        this.isServerAvailable = true;
-        this.getTemperatureAndHumidity();
-        clearInterval(interval);
+    this.networkSubscription = this.network.connectionTestFailed$.subscribe(
+      (isFailed) => {
+        if (isFailed !== null) {
+          this.isServerAvailable = !isFailed;
+          this.getTemperatureAndHumidity();
+        }
       }
-      if (this.network.connectionTestFailed) {
-        this.isLoaderVisible = false;
-        this.handleAlert();
-        clearInterval(interval);
-      }
-      if (this.weatherDataFailed) {
-        this.isLoaderVisible = false;
-        this.handleAlert();
-        clearInterval(interval);
-      }
-    }, 300);
+    );
   }
 
   handleAlert() {
-    if (this.network.connectionTestFailed) {
+    if (!this.isServerAvailable) {
       this.alertMessage =
         'Cannot connect to the Server. check your connection in the network tab. ';
     }
-    if (this.sensorDataFailed && !this.network.connectionTestFailed) {
+    if (this.sensorDataFailed && !this.isServerAvailable) {
       this.alertMessage =
         'Cannot connect to the temperature and humidity sensor, check wiring.';
     }
