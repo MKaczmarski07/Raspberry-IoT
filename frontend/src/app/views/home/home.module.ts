@@ -8,19 +8,24 @@ import { DeviceComponent } from 'src/app/components/device/device.component';
 import { ColorPickerComponent } from 'src/app/components/color-picker/color-picker.component';
 import { DeviceDetailsComponent } from './device-details/device-details.component';
 import { BlindsSettingsComponent } from 'src/app/components/blinds-settings/blinds-settings.component';
-import { AlertComponent } from 'src/app/components/alert/alert.component';
 
 import { HomePageRoutingModule } from './home-routing.module';
+import { AlertModule } from 'src/app/shared/alert/alert.module';
 
 @NgModule({
-  imports: [IonicModule, CommonModule, FormsModule, HomePageRoutingModule],
+  imports: [
+    IonicModule,
+    CommonModule,
+    FormsModule,
+    HomePageRoutingModule,
+    AlertModule,
+  ],
   declarations: [
     HomePage,
     WeatherComponent,
     DeviceComponent,
     ColorPickerComponent,
     DeviceDetailsComponent,
-    AlertComponent,
     BlindsSettingsComponent,
   ],
 })

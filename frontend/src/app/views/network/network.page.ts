@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import { GpioService } from 'src/app/data-access/gpio.service';
+import { NetworkService } from 'src/app/data-access/network.service';
 import { environment } from 'src/environments/environment';
 
 @Component({
@@ -12,7 +12,7 @@ export class NetworkPage {
   serverStatusText: string | undefined;
   ipAddress: string | undefined;
 
-  constructor(private gpioService: GpioService) {}
+  constructor(private network: NetworkService) {}
 
   ionViewDidEnter() {
     this.checkConnection();
@@ -31,17 +31,18 @@ export class NetworkPage {
   checkConnection() {
     this.serverStatus = 'unknown';
     this.serverStatusText = this.setStatusText();
-    setTimeout(() => {
-      this.gpioService.checkConnection().subscribe(
-        (res) => {
-          this.serverStatus = 'online';
-          this.serverStatusText = this.setStatusText();
-        },
-        (err) => {
-          this.serverStatus = 'offline';
-          this.serverStatusText = this.setStatusText();
-        }
-      );
-    }, 300); // prevent blinking when response is too fast
+    this.network.checkConnection();
+    const interval = setInterval(() => {
+      if (!this.network.connectionTestFailed) {
+        this.serverStatus = 'online';
+        this.serverStatusText = this.setStatusText();
+        clearInterval(interval);
+      }
+      if (this.network.connectionTestFailed) {
+        this.serverStatus = 'offline';
+        this.serverStatusText = this.setStatusText();
+        clearInterval(interval);
+      }
+    }, 300);
   }
 }

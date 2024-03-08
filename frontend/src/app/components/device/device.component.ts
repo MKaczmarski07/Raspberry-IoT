@@ -14,6 +14,7 @@ export class DeviceComponent implements OnInit {
   @Input() uniqueDeviceAdress: string = '';
   @Input() localization: string = '';
   @Input() type: '' | 'lamp' | 'blinds' = '';
+  @Input() isServerAvailable = false;
   iconSrc = '';
 
   state: 'on' | 'off' = 'off';
@@ -32,14 +33,19 @@ export class DeviceComponent implements OnInit {
   }
 
   ngOnInit() {
-    this.getState();
     this.setIcon();
+  }
+
+  ngOnChanges() {
+    if (this.isServerAvailable) {
+      this.getState();
+    }
   }
 
   getState() {
     if (this.canToggle) {
       this.gpioService
-        .getDeviceState(this.uniqueDeviceAdress)
+        .getState(this.uniqueDeviceAdress)
         .subscribe((state: any) => {
           this.state = state[0][0];
           this.handleDeviceStateChange();

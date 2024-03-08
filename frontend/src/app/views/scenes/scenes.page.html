@@ -5,17 +5,39 @@
 <ion-content>
   <div class="main-content">
     <app-scene-item
+      [sceneAddress]="'DXS7J49YFO9C'"
       [name]="'Bedtime'"
       [iconName]="'bed-sharp'"
+      [isServerAvailable]="isServerAvailable"
+      [stateChanged]="sceneStateChanged"
+      (sceneActivated)="handleSceneStateChange()"
     ></app-scene-item>
     <app-scene-item
+      [sceneAddress]="'0WR3KU9V7A1B'"
       [name]="'Romantic'"
       [iconName]="'heart-sharp'"
+      [isServerAvailable]="isServerAvailable"
+      [stateChanged]="sceneStateChanged"
+      (sceneActivated)="handleSceneStateChange()"
     ></app-scene-item>
     <app-scene-item
+      [sceneAddress]="'XG0XNVTA6CV8'"
       [name]="'Night Sky'"
       [iconName]="'moon-sharp'"
+      [isServerAvailable]="isServerAvailable"
+      [stateChanged]="sceneStateChanged"
+      (sceneActivated)="handleSceneStateChange()"
     ></app-scene-item>
-    <app-scene-item [name]="'Warm'" [iconName]="'flame-sharp'"></app-scene-item>
+    <app-scene-item
+      [sceneAddress]="'A6JZXKBT0Q80'"
+      [name]="'Warm'"
+      [iconName]="'flame-sharp'"
+      [isServerAvailable]="isServerAvailable"
+      [stateChanged]="sceneStateChanged"
+      (sceneActivated)="handleSceneStateChange()"
+    ></app-scene-item>
+  </div>
+  <div *ngIf="isLoaderVisible" class="spinner-wrapper">
+    <ion-spinner name="crescent"></ion-spinner>
   </div>
 </ion-content>

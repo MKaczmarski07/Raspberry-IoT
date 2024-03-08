@@ -16,10 +16,14 @@ export class RgbService {
   }
 
   getColor(uniqueDeviceAdress: string) {
-    return this.gpioService.getDeviceAttributes(uniqueDeviceAdress);
+    return this.gpioService.getAttributes(uniqueDeviceAdress);
   }
 
   transformColorResponse(response: Array<Array<number>>) {
     return JSON.parse('{' + response[0][0] + '}').color;
+  }
+
+  transformSceneColorResponse(response: any) {
+    return JSON.parse('{' + response[0] + '}').colors;
   }
 }

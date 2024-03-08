@@ -1,5 +1,6 @@
 import { Component } from '@angular/core';
 import { GpioService } from 'src/app/data-access/gpio.service';
+import { NetworkService } from 'src/app/data-access/network.service';
 import { Subscription } from 'rxjs';
 
 @Component({
@@ -8,23 +9,24 @@ import { Subscription } from 'rxjs';
   styleUrls: ['home.page.scss'],
 })
 export class HomePage {
-  currentTemperature: number | null = null;
-  currentHumidity: number | null = null;
+  currentTemperature: number = 0;
+  currentHumidity: number = 0;
   temperatureAndHumiditySub: Subscription | undefined;
-  sensorDataLoaded = false;
   sensorDataFailed = false;
   weatherDataLoaded = false;
   weatherDataFailed = false;
-  connectionTestFailed = false;
+  isServerAvailable = false;
   isLoaderVisible = true;
   isAllertVisible = false;
   alertMessage = '';
 
-  constructor(private gpioService: GpioService) {}
+  constructor(
+    private gpioService: GpioService,
+    public network: NetworkService
+  ) {}
 
   ionViewWillEnter() {
-    this.checkConnection();
-    this.getTemperatureAndHumidity();
+    this.network.checkConnection();
     this.handleLoader();
   }
 
@@ -35,40 +37,25 @@ export class HomePage {
         (response: any) => {
           this.currentTemperature = response[0];
           this.currentHumidity = response[1];
-          this.sensorDataLoaded = true;
+          this.sensorDataFailed = false;
+          this.isLoaderVisible = false;
         },
         (error) => {
-          this.currentTemperature = 0;
-          this.currentHumidity = 0;
           this.sensorDataFailed = true;
+          this.isLoaderVisible = false;
+          this.handleAlert();
         }
       );
   }
 
-  checkConnection() {
-    this.gpioService.checkConnection().subscribe(
-      (response) => {
-        this.connectionTestFailed = false;
-      },
-      (error) => {
-        this.connectionTestFailed = true;
-      }
-    );
-  }
-
   handleLoader() {
     const interval = setInterval(() => {
-      if (this.connectionTestFailed) {
-        this.isLoaderVisible = false;
-        this.handleAlert();
+      if (!this.network.connectionTestFailed) {
+        this.isServerAvailable = true;
+        this.getTemperatureAndHumidity();
         clearInterval(interval);
       }
-      if (this.sensorDataLoaded && this.weatherDataLoaded) {
-        this.isLoaderVisible = false;
-        clearInterval(interval);
-      }
-      if (this.sensorDataFailed && !this.connectionTestFailed) {
-        console.log('sensorDataFailed');
+      if (this.network.connectionTestFailed) {
         this.isLoaderVisible = false;
         this.handleAlert();
         clearInterval(interval);
@@ -78,15 +65,15 @@ export class HomePage {
         this.handleAlert();
         clearInterval(interval);
       }
-    }, 100);
+    }, 300);
   }
 
   handleAlert() {
-    if (this.connectionTestFailed) {
+    if (this.network.connectionTestFailed) {
       this.alertMessage =
         'Cannot connect to the Server. check your connection in the network tab. ';
     }
-    if (this.sensorDataFailed && !this.connectionTestFailed) {
+    if (this.sensorDataFailed && !this.network.connectionTestFailed) {
       this.alertMessage =
         'Cannot connect to the temperature and humidity sensor, check wiring.';
     }

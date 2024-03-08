@@ -1,62 +1,82 @@
-import { Component, OnInit, Input } from '@angular/core';
+import { Component, Input, Output, EventEmitter } from '@angular/core';
 import { GpioService } from 'src/app/data-access/gpio.service';
+import { RgbService } from 'src/app/shared/rgb.service';
 
 @Component({
   selector: 'app-scene-item',
   templateUrl: './scene-item.component.html',
   styleUrls: ['./scene-item.component.scss'],
 })
-export class SceneItemComponent implements OnInit {
+export class SceneItemComponent {
+  @Input() sceneAddress = '';
   @Input() name = '';
   @Input() iconName = '';
-  sceneType = '';
+  @Input() isServerAvailable = false;
+  @Input() stateChanged = false;
 
-  scenes: Map<string, Array<Array<number>>> = new Map([
-    [
-      'bedtime',
-      [
-        [50, 10, 0],
-        [50, 10, 0],
-      ],
-    ],
-    [
-      'romantic',
-      [
-        [255, 0, 20],
-        [10, 0, 200],
-      ],
-    ],
-    [
-      'nightsky',
-      [
-        [50, 50, 200],
-        [10, 20, 200],
-      ],
-    ],
-    [
-      'warm',
-      [
-        [250, 50, 0],
-        [250, 50, 0],
-      ],
-    ],
-  ]);
+  @Output() sceneActivated = new EventEmitter();
 
-  constructor(private gpioService: GpioService) {}
+  state: 'on' | 'off' = 'off';
 
-  ngOnInit() {
-    this.sceneType = this.transfromSceneName(this.name);
+  constructor(
+    private gpioService: GpioService,
+    private rgbService: RgbService
+  ) {}
+
+  ngOnChanges() {
+    if (this.stateChanged || this.isServerAvailable) {
+      this.getSceneState();
+    }
   }
 
-  setScene(sceneType: string) {
-    const colorOne = this.scenes.get(sceneType)![0];
-    const colorTwo = this.scenes.get(sceneType)![1];
-    this.gpioService.handleRGB('rgb_1', 'on', colorOne).subscribe();
-    this.gpioService.handleRGB('rgb_2', 'on', colorTwo).subscribe();
+  getSceneState() {
+    if (this.isServerAvailable) {
+      this.gpioService.getState(this.sceneAddress).subscribe(
+        (response: any) => {
+          this.state = response[0][0];
+        },
+        (error) => {
+          console.log(error);
+        }
+      );
+    }
   }
 
-  transfromSceneName(name: string) {
-    const sceneType = name.toLocaleLowerCase().replace(/\s/g, '');
-    return sceneType;
+  getSceneAttributes() {
+    this.gpioService.getAttributes(this.sceneAddress).subscribe(
+      (response: any) => {
+        console.log(response);
+      },
+      (error) => {
+        console.log(error);
+      }
+    );
+  }
+
+  toggleScene() {
+    this.state = this.state === 'on' ? 'off' : 'on';
+    this.handleStateChange();
+  }
+
+  handleStateChange() {
+    this.gpioService
+      .setSceneState(this.sceneAddress, this.state)
+      .subscribe((response) => {
+        if (this.state === 'on') {
+          this.sceneActivated.emit();
+          this.gpioService
+            .getAttributes(this.sceneAddress)
+            .subscribe((response: any) => {
+              const colors =
+                this.rgbService.transformSceneColorResponse(response);
+              this.rgbService.turnOnRGB('RNRYZBQWWCNM', colors[0]);
+              this.rgbService.turnOnRGB('JN49SZUFJXFB', colors[1]);
+            });
+        }
+        if (this.state === 'off') {
+          this.rgbService.turnOffRGB('RNRYZBQWWCNM');
+          this.rgbService.turnOffRGB('JN49SZUFJXFB');
+        }
+      });
   }
 }

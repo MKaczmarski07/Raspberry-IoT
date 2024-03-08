@@ -3,7 +3,13 @@
     <ion-icon name="{{ iconName }}"></ion-icon>
     <span class="name">{{ name }}</span>
   </div>
-  <button class="btn" (click)="setScene(sceneType)">
+  <button
+    class="btn"
+    [ngClass]="{
+    'active': state === 'on',
+  }"
+    (click)="toggleScene()"
+  >
     <ion-icon name="play-sharp"></ion-icon>
   </button>
 </div>

@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { HttpClient, HttpErrorResponse } from '@angular/common/http';
-import { catchError, tap } from 'rxjs/operators';
+import { catchError } from 'rxjs/operators';
 import { throwError } from 'rxjs';
 import { environment } from 'src/environments/environment';
 
@@ -12,36 +12,35 @@ export class GpioService {
 
   constructor(private http: HttpClient) {}
 
-  checkConnection() {
-    return this.http
-      .get(`http://${environment.RASPBERRY_PI_IP}:5000/connection`)
-      .pipe(catchError(this.handleError));
-  }
-
-  getDeviceState(uniqueDeviceAdress: string) {
+  getState(adress: string) {
     return this.http
       .get(
-        `http://${environment.RASPBERRY_PI_IP}:5000/device_state?device_adress=${uniqueDeviceAdress}`
+        `http://${environment.RASPBERRY_PI_IP}:5000/state?entity_adress=${adress}`
       )
       .pipe(catchError(this.handleError));
   }
 
-  getDeviceAttributes(uniqueDeviceAdress: string) {
+  getAttributes(adress: string) {
     return this.http
       .get(
-        `http://${environment.RASPBERRY_PI_IP}:5000/device_attributes?device_adress=${uniqueDeviceAdress}`
+        `http://${environment.RASPBERRY_PI_IP}:5000/attributes?entity_adress=${adress}`
       )
       .pipe(catchError(this.handleError));
   }
 
-  handleRGB(
-    uniqueDeviceAdress: string,
-    state: string,
-    color: number[] = [255, 255, 255]
-  ) {
+  setSceneState(adress: string, state: string) {
+    return this.http
+      .post(`http://${environment.RASPBERRY_PI_IP}:5000/scene`, {
+        current_scene_adress: adress,
+        state: state,
+      })
+      .pipe(catchError(this.handleError));
+  }
+
+  handleRGB(adress: string, state: string, color: number[] = [255, 255, 255]) {
     return this.http
       .post(`http://${environment.RASPBERRY_PI_IP}:5000/rgb`, {
-        device_adress: uniqueDeviceAdress,
+        device_adress: adress,
         state: state,
         color: color,
       })

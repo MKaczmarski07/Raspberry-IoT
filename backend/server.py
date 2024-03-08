@@ -3,39 +3,69 @@ from flask_cors import CORS
 from time import sleep
 import sqlite3
 import os
+import random
+import string
 
 from scripts.temperature_and_humidity import get_sensor_data
 from scripts.security_system import SecuritySystem
 from scripts.rgb import Led_rgb
-from database.db import get_state, update_state, get_attributes, update_attributes
+import database.db as db
 
 
 app = Flask(__name__)
 CORS(app)
 
 
-# create instances of object type elements
+# create device instances and other required data
 security_system = SecuritySystem(0.2,4)
 rgb_1 = Led_rgb(17,27,22)
 rgb_2 = Led_rgb(5,6,26)
-rgb_leds = {'rgb_1': rgb_1, 'rgb_2': rgb_2} # {device_adress: object Ref}
+device_refs = {'RNRYZBQWWCNM': rgb_1, 'JN49SZUFJXFB': rgb_2} # {device_adress: object Ref}
+scenes = ['DXS7J49YFO9C', '0WR3KU9V7A1B', 'XG0XNVTA6CV8', 'A6JZXKBT0Q80']
 
 
-@app.route("/device_state", methods=["GET"])
+@app.route("/connection", methods=["GET"])
+def check_connection():
+    return jsonify('Online')
+
+
+@app.route("/state", methods=["GET"])
 def get_device_state():
-    device_adress = request.args.get("device_adress")
-    return jsonify(get_state(device_adress))
+    entity_adress = request.args.get("entity_adress")
+    return jsonify(db.get_state(entity_adress))
 
 
-@app.route("/device_attributes", methods=["GET"])
+@app.route("/attributes", methods=["GET"])
 def get_device_attributes():
-    device_adress = request.args.get("device_adress")
-    return jsonify(get_attributes(device_adress))
+    entity_adress = request.args.get("entity_adress")
+    return jsonify(db.get_attributes(entity_adress))
 
 
 @app.route("/temperature_and_humidity", methods=["GET"])
 def temperature_and_humidity():
     return jsonify(get_sensor_data())
+
+
+@app.route("/scene", methods=["POST"])
+def set_scene():
+    data = json.loads(request.data)
+    
+    if data.get("current_scene_adress") is None:
+        return jsonify({"error": f"Error: Missing 'current_scene_adress' key in JSON data."}), 400
+    current_scene_adress = data.get("current_scene_adress")
+    
+    if data.get("state") is None:
+        return jsonify({"error": f"Error: Missing 'state' key in JSON data."}), 400
+    state = data.get("state")
+    
+    # prevent selecting more than one scene at once 
+    if state == 'on':
+        for scene_adress in scenes:
+            if scene_adress != current_scene_adress:
+              db.update_state(scene_adress, 'off')
+    
+    db.update_state(current_scene_adress, state)
+    return jsonify(f'scene {current_scene_adress} active')
 
 
 @app.route("/detect_motion", methods=["POST"])
@@ -79,13 +109,13 @@ def handle_rgb():
     def handle_color_change(diode):
         if state == 'on':
             diode.set_color(red, green, blue)
-            update_attributes(device_adress, f'"color": [{red},{green},{blue}]')
+            db.update_attributes(device_adress, f'"color": [{red},{green},{blue}]')
         else:
             diode.stop_pwn()
             
-    diode_ref = rgb_leds[device_adress]
+    diode_ref = device_refs[device_adress]
     handle_color_change(diode_ref)
-    update_state(device_adress, state)
+    db.update_state(device_adress, state)
     
     return jsonify('rgb')
 

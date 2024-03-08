@@ -7,6 +7,11 @@ currentDirectory = os.path.dirname(os.path.abspath(__file__))
 DATABASE = f'{currentDirectory}/database.db'
 
 
+def generate_adress():
+    characters = string.ascii_uppercase + string.digits
+    adress = ''.join(random.choice(characters) for _ in range(12))
+    return adress
+
 def get_db():
     db = getattr(g, '_database', None)
     if db is None:
@@ -15,8 +20,8 @@ def get_db():
 
 def create_states_table():
     connection = get_db()
-    connection.execute("CREATE TABLE states (id INT PRIMARY KEY, name TEXT UNIQUE, state TEXT, attributes TEXT)")
-  
+    connection.execute("CREATE TABLE states (id INT PRIMARY KEY, adress TEXT UNIQUE, state TEXT, attributes TEXT)")
+    
 def insert_states_data(id, adress, state, attributes):
     connection = get_db()
     connection.execute("INSERT INTO states (id, adress, state, attributes) VALUES (?,?,?,?)",(id, adress, state, attributes))
@@ -53,4 +58,6 @@ def get_attributes(adress):
     query = "SELECT attributes FROM states WHERE adress = '" + adress + "'"
     cursor.execute(query)
     return cursor.fetchall()
+
+
 
