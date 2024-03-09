@@ -65,7 +65,7 @@ export class HomePage {
       this.alertMessage =
         'Cannot connect to the Server. check your connection in the network tab. ';
     }
-    if (this.sensorDataFailed && !this.isServerAvailable) {
+    if (this.sensorDataFailed && this.isServerAvailable) {
       this.alertMessage =
         'Cannot connect to the temperature and humidity sensor, check wiring.';
     }
@@ -76,9 +76,9 @@ export class HomePage {
     this.isAllertVisible = true;
   }
 
-  ngOnDestroy() {
-    if (this.temperatureAndHumiditySub) {
-      this.temperatureAndHumiditySub.unsubscribe();
+  ionViewWillLeave() {
+    if (this.networkSubscription) {
+      this.networkSubscription.unsubscribe();
     }
   }
 }

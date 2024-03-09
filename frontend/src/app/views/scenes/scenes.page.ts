@@ -23,7 +23,6 @@ export class ScenesPage {
         }
       }
     );
-    console.log(this.networkSubscription);
   }
 
   handleSceneStateChange() {

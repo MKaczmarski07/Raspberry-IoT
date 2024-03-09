@@ -34,7 +34,6 @@ export class ColorPickerComponent implements OnInit {
       .getColor(this.uniqueDeviceAdress)
       .subscribe((response: any) => {
         const color = this.rgbService.transformColorResponse(response);
-        console.log(color);
         this.coloPicker.color.rgb = {
           r: color[0],
           g: color[1],

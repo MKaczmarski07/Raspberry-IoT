@@ -4,7 +4,7 @@
 
 <ion-content>
   <div class="main-content">
-    <button class="btn arm-btn" (click)="armHome()">
+    <button class="btn arm-btn" (click)="toggleArming()">
       <div *ngIf="!isArmed">
         <ion-icon name="lock-open-sharp"></ion-icon>
         <span>Unarmed</span>
@@ -17,11 +17,20 @@
     <span class="title">Settings</span>
     <div class="settings-section">
       <span>Use Siren</span>
-      <ion-toggle></ion-toggle>
+      <ion-toggle
+        [(ngModel)]="isAlarmAllowed"
+        (ngModelChange)="setValues()"
+      ></ion-toggle>
     </div>
     <div class="settings-section">
       <span>Send Notifications</span>
-      <ion-toggle></ion-toggle>
+      <ion-toggle
+        [(ngModel)]="areNotificationsAllowed"
+        (ngModelChange)="setValues()"
+      ></ion-toggle>
     </div>
+  </div>
+  <div *ngIf="isLoaderVisible" class="spinner-wrapper">
+    <ion-spinner name="crescent"></ion-spinner>
   </div>
 </ion-content>

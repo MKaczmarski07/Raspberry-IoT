@@ -20,7 +20,7 @@ CORS(app)
 security_system = SecuritySystem(0.2,4)
 rgb_1 = Led_rgb(17,27,22)
 rgb_2 = Led_rgb(5,6,26)
-device_refs = {'RNRYZBQWWCNM': rgb_1, 'JN49SZUFJXFB': rgb_2} # {device_adress: object Ref}
+device_refs = {'RNRYZBQWWCNM': rgb_1, 'JN49SZUFJXFB': rgb_2, 'WNZ65WDYJSFO': security_system} # {device_adress: object Ref}
 scenes = ['DXS7J49YFO9C', '0WR3KU9V7A1B', 'XG0XNVTA6CV8', 'A6JZXKBT0Q80']
 
 
@@ -72,14 +72,32 @@ def set_scene():
 def detect_motion():
     data = json.loads(request.data)
     
-    if data.get("is_allowed") is None:
-        return jsonify({"error": f"Error: Missing 'is_allowed' key in JSON data."}), 400
-    is_allowed = data.get("is_allowed")
+    if data.get("device_adress") is None:
+        return jsonify({"error": f"Error: Missing 'device_adress' key in JSON data."}), 400
+    device_adress = data.get("device_adress")
     
-    if is_allowed:
-        security_system.start_system()
+    if data.get("state") is None:
+        return jsonify({"error": f"Error: Missing 'state' key in JSON data."}), 400
+    state = data.get("state")
+    
+    if data.get("is_alarm_allowed") is None:
+        return jsonify({"error": f"Error: Missing 'is_alarm_allowed' key in JSON data."}), 400
+    is_alarm_allowed = data.get("is_alarm_allowed")
+    
+    if data.get("are_notifications_allowed") is None:
+        return jsonify({"error": f"Error: Missing 'are_notifications_allowed' key in JSON data."}), 400
+    are_notifications_allowed = data.get("are_notifications_allowed")
+    
+    system_ref = device_refs[device_adress]
+    db.update_state(device_adress, state)
+    db.update_attributes(device_adress, f'"notifications": {are_notifications_allowed}, "siren": {is_alarm_allowed}')
+     
+    if state == 'on':
+        if security_system.is_running:
+            security_system.stop_system()
+        security_system.start_system(is_alarm_allowed)
         return jsonify('House armed')
-    else:
+    if state == 'off':
         security_system.stop_system()
         return jsonify('House unarmed')
     

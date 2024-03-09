@@ -11,6 +11,5 @@ export class AppComponent {
 
   ngOnInit() {
     this.network.checkConnection();
-    console.log('AppComponent ngOnInit');
   }
 }

@@ -55,10 +55,18 @@ export class GpioService {
       .pipe(catchError(this.handleError));
   }
 
-  detectMotion(isAllowed: boolean) {
+  detectMotion(
+    adress: string,
+    state: string,
+    isAlarmAllowed: boolean,
+    areNotificationsAllowed: boolean
+  ) {
     return this.http
       .post(`http://${environment.RASPBERRY_PI_IP}:5000/detect_motion`, {
-        is_allowed: isAllowed,
+        device_adress: adress,
+        state: state,
+        is_alarm_allowed: isAlarmAllowed,
+        are_notifications_allowed: areNotificationsAllowed,
       })
       .pipe(catchError(this.handleError));
   }

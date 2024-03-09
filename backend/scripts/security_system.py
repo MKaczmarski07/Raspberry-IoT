@@ -20,12 +20,13 @@ class SecuritySystem(object):
         self.duration = duration
         self.is_alarm_on = False
      
-    def detect_motion(self, duration):
+    def detect_motion(self, duration, is_alarm_allowed):
         if (self.is_running and (GPIO.input(PIR_PIN) and (not self.is_alarm_on))):
             self.is_alarm_on = True
             print(get_date(),get_time(),' Motion Detected')
             # everything must be done before calling the alarm function
-            alarm(duration)
+            if (is_alarm_allowed):
+                alarm(duration)
             sleep(duration)
             self.is_alarm_on = False
 
@@ -33,9 +34,9 @@ class SecuritySystem(object):
         self.is_running = False
         self.start_system()
 
-    def start_system(self):
+    def start_system(self, is_alarm_allowed):
         if not self.is_running:
-            self.timer = RepeatedTimer(self.interval, self.detect_motion, self.duration)
+            self.timer = RepeatedTimer(self.interval, self.detect_motion, self.duration, is_alarm_allowed)
             self.timer.start()
             self.is_running = True
             led_on()

@@ -30,7 +30,6 @@ export class NetworkPage {
         }
       }
     );
-    console.log(this.networkSubscription);
   }
 
   setStatusText() {
