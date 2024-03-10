@@ -24,7 +24,11 @@ device_refs = {'RNRYZBQWWCNM': rgb_1, 'JN49SZUFJXFB': rgb_2, 'WNZ65WDYJSFO': sec
 scenes = ['DXS7J49YFO9C', '0WR3KU9V7A1B', 'XG0XNVTA6CV8', 'A6JZXKBT0Q80']
 
 
-@app.route("/connection", methods=["GET"])
+def return_missing_key_info(key):
+    return jsonify({"error": f"Error: Missing '{key}' key in JSON data."}), 400
+
+
+@app.route("/", methods=["GET"])
 def check_connection():
     return jsonify('Online')
 
@@ -49,13 +53,13 @@ def temperature_and_humidity():
 @app.route("/scene", methods=["POST"])
 def set_scene():
     data = json.loads(request.data)
+    keys = ["current_scene_adress", "state"]
     
-    if data.get("current_scene_adress") is None:
-        return jsonify({"error": f"Error: Missing 'current_scene_adress' key in JSON data."}), 400
+    for key in keys:
+        if data.get(key) is None:
+            return return_missing_key_info(key)
+    
     current_scene_adress = data.get("current_scene_adress")
-    
-    if data.get("state") is None:
-        return jsonify({"error": f"Error: Missing 'state' key in JSON data."}), 400
     state = data.get("state")
     
     # prevent selecting more than one scene at once 
@@ -71,21 +75,15 @@ def set_scene():
 @app.route("/detect_motion", methods=["POST"])
 def detect_motion():
     data = json.loads(request.data)
+    keys = ["device_adress", "state", "is_alarm_allowed", "are_notifications_allowed"]
     
-    if data.get("device_adress") is None:
-        return jsonify({"error": f"Error: Missing 'device_adress' key in JSON data."}), 400
+    for key in keys:
+        if data.get(key) is None:
+            return return_missing_key_info(key)
+    
     device_adress = data.get("device_adress")
-    
-    if data.get("state") is None:
-        return jsonify({"error": f"Error: Missing 'state' key in JSON data."}), 400
     state = data.get("state")
-    
-    if data.get("is_alarm_allowed") is None:
-        return jsonify({"error": f"Error: Missing 'is_alarm_allowed' key in JSON data."}), 400
     is_alarm_allowed = data.get("is_alarm_allowed")
-    
-    if data.get("are_notifications_allowed") is None:
-        return jsonify({"error": f"Error: Missing 'are_notifications_allowed' key in JSON data."}), 400
     are_notifications_allowed = data.get("are_notifications_allowed")
     
     system_ref = device_refs[device_adress]
@@ -105,19 +103,19 @@ def detect_motion():
 @app.route("/rgb", methods=["POST"])
 def handle_rgb():
     data = json.loads(request.data)
+    keys = ["device_adress", "state"]
     
-    if data.get("device_adress") is None:
-        return jsonify({"error": f"Error: Missing 'device_name' key in JSON data."}), 400
+    for key in keys:
+        if data.get(key) is None:
+            return return_missing_key_info(key)
+    
     device_adress = data.get("device_adress")
-    
-    if data.get("state") is None:
-        return jsonify({"error": f"Error: Missing 'state' key in JSON data."}), 400
     state = data.get("state")
     
-    color = data.get("color")
     red = 255
     green = 255
     blue = 255
+    color = data.get("color")
     
     if color is not None:
         red = color[0]
@@ -141,10 +139,11 @@ def handle_rgb():
 @app.route("/blinds", methods=["POST"])
 def handle_blinds():
     data = json.loads(request.data)
+    keys = ["covering"]
     
-    if data.get("covering") is None:
-        return jsonify({"error": f"Error: Missing 'covering' key in JSON data."}), 400
-    covering = data.get("is_on")
+    for key in keys:
+        if data.get(key) is None:
+            return return_missing_key_info(key)
     
     covering = data.get("covering")
     return jsonify(covering)

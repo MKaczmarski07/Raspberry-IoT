@@ -40,4 +40,8 @@
   <div *ngIf="isLoaderVisible" class="spinner-wrapper">
     <ion-spinner name="crescent"></ion-spinner>
   </div>
+  <app-alert
+    [isAlertVisible]="isAlertVisible"
+    [alertMessage]="alertMessage"
+  ></app-alert>
 </ion-content>

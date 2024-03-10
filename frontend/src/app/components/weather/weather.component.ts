@@ -1,5 +1,6 @@
 import { Component, OnInit, Output, EventEmitter } from '@angular/core';
 import { WeatherService } from 'src/app/data-access/weather.service';
+import { DateService } from 'src/app/shared/date.service';
 
 @Component({
   selector: 'app-weather',
@@ -11,14 +12,20 @@ export class WeatherComponent implements OnInit {
   country = '';
   temperature = '0';
   weather = '';
+  iconSrc = '';
+  date = '';
   @Output() weatherDataLoaded = new EventEmitter<boolean>();
   @Output() weatherDataFailed = new EventEmitter<boolean>();
 
-  constructor(private weatherService: WeatherService) {}
+  constructor(
+    private weatherService: WeatherService,
+    private dateService: DateService
+  ) {}
 
   ngOnInit() {
     this.getWeather();
     this.getCityName();
+    this.date = this.dateService.getCurrentDate();
   }
 
   async getWeather() {
@@ -28,6 +35,7 @@ export class WeatherComponent implements OnInit {
         this.country = data.sys.country;
         this.temperature = (data.main.temp - 273.15).toFixed(0);
         this.weather = data.weather[0].main;
+        this.iconSrc = `../../../assets/images/weather/${data.weather[0].icon}.svg`;
         this.weatherDataLoaded.emit(true);
       },
       (error) => {

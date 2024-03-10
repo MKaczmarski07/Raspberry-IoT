@@ -8,6 +8,9 @@
   </div>
   <div class="section">
     <span class="temp">{{ temperature }} °C</span>
+    <img [src]="iconSrc" alt="weather icon" class="weather-icon" />
   </div>
-  <div class="section"></div>
+  <div class="section">
+    <span>{{ date }}</span>
+  </div>
 </div>

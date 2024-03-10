@@ -14,7 +14,7 @@ export class NetworkService {
 
   private getConnectionInfo() {
     return this.http
-      .get(`http://${environment.RASPBERRY_PI_IP}:5000/connection`)
+      .get(`http://${environment.RASPBERRY_PI_IP}:5000`)
       .pipe(catchError(this.handleError));
   }
 

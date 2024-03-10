@@ -12,6 +12,8 @@ export class ScenesPage {
   isServerAvailable = false;
   isLoaderVisible = true;
   sceneStateChanged = false;
+  isAlertVisible = false;
+  alertMessage = '';
   constructor(private network: NetworkService) {}
 
   ionViewWillEnter() {
@@ -20,6 +22,11 @@ export class ScenesPage {
         if (isFailed !== null) {
           this.isServerAvailable = !isFailed;
           this.isLoaderVisible = false;
+        }
+        if (isFailed) {
+          this.alertMessage =
+            'Cannot connect to the Server. check your connection in the network tab.';
+          this.isAlertVisible = true;
         }
       }
     );

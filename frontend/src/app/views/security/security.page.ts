@@ -11,10 +11,12 @@ import { NetworkService } from 'src/app/data-access/network.service';
 export class SecurityPage {
   adress = 'WNZ65WDYJSFO';
   state: 'on' | 'off' = 'off';
+  alertMessage = '';
+  isLoaderVisible = true;
+  isAlertVisible = false;
   isArmed = false;
   isAlarmAllowed = false;
   areNotificationsAllowed = false;
-  isLoaderVisible = true;
 
   networkSubscription: Subscription | undefined;
 
@@ -28,6 +30,12 @@ export class SecurityPage {
       (isFailed) => {
         if (isFailed !== null) {
           this.getState();
+        }
+        if (isFailed) {
+          this.isLoaderVisible = false;
+          this.alertMessage =
+            'Cannot connect to the Server. check your connection in the network tab.';
+          this.isAlertVisible = true;
         }
       }
     );
@@ -71,22 +79,6 @@ export class SecurityPage {
       this.isLoaderVisible = false;
     });
   }
-
-  // handleAlert() {
-  //   if (!this.isServerAvailable) {
-  //     this.alertMessage =
-  //       'Cannot connect to the Server. check your connection in the network tab. ';
-  //   }
-  //   if (this.sensorDataFailed && this.isServerAvailable) {
-  //     this.alertMessage =
-  //       'Cannot connect to the temperature and humidity sensor, check wiring.';
-  //   }
-  //   if (this.weatherDataFailed) {
-  //     this.alertMessage =
-  //       'Cannot connect to the weather API, check your internet connection.';
-  //   }
-  //   this.isAllertVisible = true;
-  // }
 
   ionViewWillLeave() {
     if (this.networkSubscription) {
