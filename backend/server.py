@@ -75,7 +75,7 @@ def set_scene():
 @app.route("/detect_motion", methods=["POST"])
 def detect_motion():
     data = json.loads(request.data)
-    keys = ["device_adress", "state", "is_alarm_allowed", "are_notifications_allowed"]
+    keys = ["device_adress", "state", "is_alarm_allowed", "are_notifications_allowed", "email"]
     
     for key in keys:
         if data.get(key) is None:
@@ -85,6 +85,7 @@ def detect_motion():
     state = data.get("state")
     is_alarm_allowed = data.get("is_alarm_allowed")
     are_notifications_allowed = data.get("are_notifications_allowed")
+    email = data.get("email")
     
     system_ref = device_refs[device_adress]
     db.update_state(device_adress, state)
@@ -93,7 +94,7 @@ def detect_motion():
     if state == 'on':
         if security_system.is_running:
             security_system.stop_system()
-        security_system.start_system(is_alarm_allowed)
+        security_system.start_system(is_alarm_allowed, are_notifications_allowed, email)
         return jsonify('House armed')
     if state == 'off':
         security_system.stop_system()

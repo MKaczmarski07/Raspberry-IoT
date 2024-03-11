@@ -36,7 +36,11 @@ def get_sensor_data():
             return temperature_c, humidity
         except RuntimeError as error:
             # Errors happen fairly often, DHT's are hard to read
-            print(error.args[0])
+            error_message = error.args[0]
+            if(error_message == 'DHT sensor not found, check wiring'):
+                sensor.exit()
+                raise error
+            print(error_message)
             time.sleep(2.0)
             continue
         except Exception as error:

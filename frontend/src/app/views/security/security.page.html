@@ -14,18 +14,40 @@
         <span>Armed</span>
       </div>
     </button>
-    <span class="title">Settings</span>
-    <div class="settings-section">
-      <span>Use Siren</span>
-      <ion-toggle
-        [(ngModel)]="isAlarmAllowed"
-        (ngModelChange)="setValues()"
-      ></ion-toggle>
+
+    <div class="email-section">
+      <span class="title">Email </span>
+      <div class="email-input-wrapper">
+        <input
+          class="email-input"
+          type="text"
+          [(ngModel)]="email"
+          (ngModelChange)="isEmailSaved = false"
+        />
+        <button
+          [ngClass]="{
+          'active': isEmailSaved,
+        }"
+          class="save-btn"
+          (click)="saveEmail()"
+        >
+          <span *ngIf="!isEmailSaved">Save</span>
+          <span *ngIf="isEmailSaved">Saved</span>
+        </button>
+      </div>
     </div>
+    <span class="title">Settings</span>
     <div class="settings-section">
       <span>Send Notifications</span>
       <ion-toggle
         [(ngModel)]="areNotificationsAllowed"
+        (ngModelChange)="saveEmail()"
+      ></ion-toggle>
+    </div>
+    <div class="settings-section">
+      <span>Use Siren</span>
+      <ion-toggle
+        [(ngModel)]="isAlarmAllowed"
         (ngModelChange)="setValues()"
       ></ion-toggle>
     </div>

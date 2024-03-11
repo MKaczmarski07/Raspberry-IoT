@@ -2,6 +2,7 @@ import { Component } from '@angular/core';
 import { GpioService } from 'src/app/data-access/gpio.service';
 import { Subscription } from 'rxjs';
 import { NetworkService } from 'src/app/data-access/network.service';
+import { StorageService } from 'src/app/shared/storage.service';
 
 @Component({
   selector: 'app-security',
@@ -12,20 +13,31 @@ export class SecurityPage {
   adress = 'WNZ65WDYJSFO';
   state: 'on' | 'off' = 'off';
   alertMessage = '';
+  email = '';
+  savedEmail = '';
   isLoaderVisible = true;
   isAlertVisible = false;
   isArmed = false;
   isAlarmAllowed = false;
   areNotificationsAllowed = false;
+  isEmailSaved = false;
 
   networkSubscription: Subscription | undefined;
 
   constructor(
     private gpioService: GpioService,
-    private network: NetworkService
+    private network: NetworkService,
+    private storage: StorageService
   ) {}
 
   ionViewWillEnter() {
+    this.isEmailSaved = false;
+    this.storage.getValue('email').then((value) => {
+      if (value) {
+        this.email = value;
+        this.savedEmail = value;
+      }
+    });
     this.networkSubscription = this.network.connectionTestFailed$.subscribe(
       (isFailed) => {
         if (isFailed !== null) {
@@ -54,9 +66,17 @@ export class SecurityPage {
         this.adress,
         this.state,
         this.isAlarmAllowed,
-        this.areNotificationsAllowed
+        this.areNotificationsAllowed,
+        this.savedEmail
       )
       .subscribe();
+  }
+
+  saveEmail() {
+    const email = this.email.trim(); // remove white spaces
+    this.storage.setValue('email', email);
+    this.isEmailSaved = true;
+    this.savedEmail = email;
   }
 
   getState() {
