@@ -18,6 +18,7 @@
 **Thesis title:** <i>Design and implementation of a smart home management platform</i> <br/>
 The main goal was to develop a system allowing for remote control of home automation devices using the HTTP protocol and a smartphone application. The project assumes creation of a low-budget electronic model using a set of sensors and actuators simulating the operation of real home devices. The brain of the whole system is a Raspberry PI microcomputer, responsible for managing connected devices and enabling remote communication with the end-user's smartphone application. This repository, along with the documentation below, can also serve as inspiration and help for people who want to start their adventure with IoT, embedded systems or RaspberryPi.
 
+![Isometric mockup - Copy@10-656x305 (2)](https://github.com/MKaczmarski07/smart-home/assets/95142305/6bfe1f1d-4f01-4a93-ac29-0c1f19822a66)
 
 ## Features
 - Home arming function - Controlling the operation of the motion sensor and detecting intrusions.
@@ -38,6 +39,8 @@ The main goal was to develop a system allowing for remote control of home automa
 - [Network Communication](#network)
 - [Ionic App - Architecture and setup guide](#ionic)
 - [Setup the Raspberry Pi](#setup-the-raspberry-pi)
+- [Setup Flask Web Server Manually](#setup-flask)
+- [Setup Flask Web Server using Docker (Coming soon...)](#setup-flask-docker)
 - [Expansion Possibilities](#expansion-possibilities)
 
 
@@ -163,6 +166,24 @@ The raspberrypi microcomputer should not be turned off by immediately disconnect
 ```
 And wait until the green LED on the raspberry stops blinking
 
+<a name="setup-flask"></a>
+## Setup Flask Web Server Manually
+First, install the required dependencies
+
+```
+sudo apt update
+sudo apt upgrade
+
+sudo apt install python3-pip
+
+pip install Flask
+pip install Flask-Cors
+pip install adafruit-circuitpython-dht
+```
+Then, go to the backend folder and run the server.py file
+```
+python server.py
+```
 <a name="expansion-possibilities"></a>
 ## Expansion Possibilities
 - Due to the availability of funds, the project uses a wired connection to sensors and actuators, directly to the GPIO ports. In a full-scale home system, communication could take place wirelessly, e.g. via the ZigBee protocol or Bluetooth.
