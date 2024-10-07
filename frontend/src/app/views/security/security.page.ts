@@ -14,7 +14,6 @@ export class SecurityPage {
   state: 'on' | 'off' = 'off';
   alertMessage = '';
   email = '';
-  savedEmail = '';
   isLoaderVisible = true;
   isAlertVisible = false;
   isArmed = false;
@@ -35,20 +34,16 @@ export class SecurityPage {
     this.storage.getValue('email').then((value) => {
       if (value) {
         this.email = value;
-        this.savedEmail = value;
       }
     });
-    this.networkSubscription = this.network.connectionTestFailed$.subscribe(
-      (isFailed) => {
-        if (isFailed !== null) {
-          this.getState();
-        }
-        if (isFailed) {
-          this.isLoaderVisible = false;
-          this.alertMessage =
-            'Cannot connect to the Server. check your connection in the network tab.';
-          this.isAlertVisible = true;
-        }
+    this.networkSubscription = this.network.getConnectionInfo().subscribe(
+      (status) => {
+        this.getState();
+      },
+      (error) => {
+        this.isLoaderVisible = false;
+        this.alertMessage = 'Unable to connect to the server';
+        this.isAlertVisible = true;
       }
     );
   }
@@ -60,24 +55,17 @@ export class SecurityPage {
   }
 
   setValues() {
-    console.log(this.isAlarmAllowed, this.areNotificationsAllowed);
     this.gpioService
       .detectMotion(
         this.adress,
         this.state,
         this.isAlarmAllowed,
         this.areNotificationsAllowed,
-        this.savedEmail
+        this.email
       )
       .subscribe();
   }
 
-  saveEmail() {
-    const email = this.email.trim(); // remove white spaces
-    this.storage.setValue('email', email);
-    this.isEmailSaved = true;
-    this.savedEmail = email;
-  }
 
   getState() {
     this.gpioService.getState(this.adress).subscribe((response: any) => {
@@ -86,7 +74,6 @@ export class SecurityPage {
         this.isArmed = true;
       }
       this.getSettings();
-      console.log(this.state);
     });
   }
 

@@ -50,12 +50,14 @@ export class HomePage {
   }
 
   handleLoader() {
-    this.networkSubscription = this.network.connectionTestFailed$.subscribe(
-      (isFailed) => {
-        if (isFailed !== null) {
-          this.isServerAvailable = !isFailed;
-          this.getTemperatureAndHumidity();
-        }
+    this.networkSubscription = this.network.getConnectionInfo().subscribe(
+      (status) => {
+        this.isServerAvailable = true;
+        this.getTemperatureAndHumidity();
+      },
+      (error) => {
+        this.isServerAvailable = false;
+        this.handleAlert();
       }
     );
   }

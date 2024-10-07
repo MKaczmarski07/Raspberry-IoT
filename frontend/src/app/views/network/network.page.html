@@ -21,7 +21,7 @@
           <button class="btn" (click)="refresh()">
             <ion-icon name="sync-outline"></ion-icon>
           </button>
-          <button class="btn">
+          <button class="btn" routerLink="/tabs/network/settings">
             <ion-icon name="settings-outline"></ion-icon>
           </button>
         </div>
@@ -38,7 +38,7 @@
         <span class="server-status">{{serverStatusText}}</span>
       </div>
     </div>
-    <div class="wrapper">
+    <div *ngIf="serverStatus=='offline'" class="wrapper">
       <div class="flex-left-section">
         <ion-icon
           class="info-icon"

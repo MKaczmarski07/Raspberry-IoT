@@ -17,17 +17,16 @@ export class ScenesPage {
   constructor(private network: NetworkService) {}
 
   ionViewWillEnter() {
-    this.networkSubscription = this.network.connectionTestFailed$.subscribe(
-      (isFailed) => {
-        if (isFailed !== null) {
-          this.isServerAvailable = !isFailed;
-          this.isLoaderVisible = false;
-        }
-        if (isFailed) {
-          this.alertMessage =
-            'Cannot connect to the Server. check your connection in the network tab.';
-          this.isAlertVisible = true;
-        }
+    this.networkSubscription = this.network.getConnectionInfo().subscribe(
+      (status) => {
+        this.isServerAvailable = true;
+        this.isLoaderVisible = false;
+      },
+      (error) => {
+        this.isServerAvailable = false;
+        this.isLoaderVisible = false;
+        this.alertMessage = 'Unable to connect to the server';
+        this.isAlertVisible = true;
       }
     );
   }

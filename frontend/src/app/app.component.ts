@@ -1,5 +1,4 @@
 import { Component } from '@angular/core';
-import { NetworkService } from 'src/app/data-access/network.service';
 
 @Component({
   selector: 'app-root',
@@ -7,9 +6,5 @@ import { NetworkService } from 'src/app/data-access/network.service';
   styleUrls: ['app.component.scss'],
 })
 export class AppComponent {
-  constructor(private network: NetworkService) {}
 
-  ngOnInit() {
-    this.network.checkConnection();
-  }
 }
