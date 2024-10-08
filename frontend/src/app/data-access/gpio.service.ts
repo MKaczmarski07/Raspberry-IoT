@@ -98,6 +98,19 @@ export class GpioService {
     );
   }
 
+  handleBlinds(adress: string, covering: number): Observable<any> {
+    return from(this.getIP()).pipe(
+      switchMap((ip) =>
+        this.http
+          .post(`http://${ip}:5000/blinds`, {
+            device_adress: adress,
+            covering: covering,
+          })
+          .pipe(catchError(this.handleError))
+      )
+    );
+  }
+
   private handleError(errorRes: HttpErrorResponse) {
     return throwError(errorRes);
   }

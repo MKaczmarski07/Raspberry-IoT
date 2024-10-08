@@ -13,7 +13,10 @@
       [uniqueDeviceAdress]="uniqueDeviceAdress"
       (colorDataLoaded)="isLoaded = $event"
     ></app-color-picker>
-    <app-blinds-settings *ngIf="type === 'blinds'"></app-blinds-settings>
+    <app-blinds-settings *ngIf="type === 'blinds'"
+    [uniqueDeviceAdress]="uniqueDeviceAdress"
+    (blindsDataLoaded)="isLoaded = $event"
+    ></app-blinds-settings>
   </div>
   <div *ngIf="!isLoaded" class="spinner-wrapper">
     <ion-spinner name="crescent"></ion-spinner>
