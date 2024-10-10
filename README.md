@@ -3,7 +3,6 @@
 # Smart Home Management Platform
 
   <p align="center">
-    <i>[⚠️ Still in development ]</i> <br/>
     <i>Project done for an engineering thesis</i> <br/>
     Lublin University of Technology <br/>
     Faculty of Electrical Engineering and Computer Science <br/>
@@ -18,7 +17,7 @@
 **Thesis title:** <i>Design and implementation of a smart home management platform</i> <br/>
 The main goal was to develop a system allowing for remote control of home automation devices using the HTTP protocol and a smartphone application. The project assumes creation of a low-budget electronic model using a set of sensors and actuators simulating the operation of real home devices. The brain of the whole system is a Raspberry PI microcomputer, responsible for managing connected devices and enabling remote communication with the end-user's smartphone application. This repository, along with the documentation below, can also serve as inspiration and help for people who want to start their adventure with IoT, embedded systems or RaspberryPi.
 
-![Isometric mockup - Copy@10-656x305 (2)](https://github.com/MKaczmarski07/smart-home/assets/95142305/6bfe1f1d-4f01-4a93-ac29-0c1f19822a66)
+![Mockup](https://github.com/user-attachments/assets/be52269e-f8ee-4582-b493-0c3fa09b6f28)
 
 ## Features
 - Home arming function - Controlling the operation of the motion sensor and detecting intrusions.
@@ -39,8 +38,7 @@ The main goal was to develop a system allowing for remote control of home automa
 - [Network Communication](#network)
 - [Ionic App - Architecture and setup guide](#ionic)
 - [Setup the Raspberry Pi](#setup-the-raspberry-pi)
-- [Setup Flask Web Server Manually](#setup-flask)
-- [Setup Flask Web Server using Docker (Coming soon...)](#setup-flask-docker)
+- [Setup Flask Web Server](#setup-flask)
 - [Expansion Possibilities](#expansion-possibilities)
 
 
@@ -64,8 +62,8 @@ The main goal was to develop a system allowing for remote control of home automa
 
 <a name="hardware-architecture"></a>
 ## Hardware Architecture
-![scheme1](https://github.com/MKaczmarski07/smart-home/assets/95142305/3e49a798-4e40-4fc1-89e5-addfad4a8309)
-<i>Some components must be directly grounded to the raspberry pi to work properly. However, it is not recommended to power components such as motors directly from the board pins, because too high current may damage the pin or the computer.</i> <br/>
+![scheme](https://github.com/user-attachments/assets/979696b2-025e-485b-8386-d008075ac5f7)
+<i>Some components should be directly grounded to the raspberry pi to work properly. However, it is not recommended to power components such as motors directly from the board pins, because too high current may damage the pin or the computer.</i> <br/>
 
 
 <a name="software-architecture"></a>
@@ -93,11 +91,6 @@ The main goal was to develop a system allowing for remote control of home automa
 
 ### Databases
 [SQLite 🔗](https://www.sqlite.org)<br>
-
-<!-- 
-[Docker 🔗]()<br>
-[🔗]()<br>
-… -->
 
 <a name="database"></a>
 ## Storing data and managing states
