@@ -1,49 +1,39 @@
-<div align="center">
-  
-# Smart Home Management Platform
 
-  <p align="center">
-    <i>Project done for an engineering thesis</i> <br/>
-    Lublin University of Technology <br/>
-    Faculty of Electrical Engineering and Computer Science <br/>
-    Department of Electrical Engineering and Intelligent Technologies
-    <br />
-  </p>
-</div>
+# About The Project
+<i>This project was developed as part of my Engineering Thesis defended in 2025 at Lublin University of Technology, Faculty of Electrical Engineering and Computer Science, Department of Electrical Engineering and Intelligent Technologies.</i>
 
+### Main Concepts and Learning Objectives
+- The primary objective was to explore the fundamental components of modern smart buildings and develop a simple system in real life using available resources. <br/>
+- Apart from my theoretical research on the subject, I built a Raspberry Pi-based system that enables remote control of sensors and actuators via a mobile application. <br/>
+- The communication between user interface and hardware components is achieved with client-server model utilizing HTTP protocol and REST API. <br/>
+- A web server hosted on the Raspberry Pi executes Python scripts to manage GPIO pins and establish connectivity with the external world <br/>
 
-## About The Project
+### Used Technologies
+[![My Skills](https://skillicons.dev/icons?i=python,raspberrypi,ubuntu,flask,typescript,angular,sass,sqlite)](https://skillicons.dev)
 
-**Thesis title:** <i>Design and implementation of a smart home management platform</i> <br/>
-The main goal was to develop a system allowing for remote control of home automation devices using the HTTP protocol and a smartphone application. The project assumes creation of a low-budget electronic model using a set of sensors and actuators simulating the operation of real home devices. The brain of the whole system is a Raspberry PI microcomputer, responsible for managing connected devices and enabling remote communication with the end-user's smartphone application. This repository, along with the documentation below, can also serve as inspiration and help for people who want to start their adventure with IoT, embedded systems or RaspberryPi.
-
-![Mockup](https://github.com/user-attachments/assets/be52269e-f8ee-4582-b493-0c3fa09b6f28)
-
-## Features
-- Home arming function - Controlling the operation of the motion sensor and detecting intrusions.
-- Sending notifications and turning on the alarm when an intrusion is detected, with the option of turning off each of these functions.
-- Measuring current temperature and humidity in a room and displaying data in the application.
-- Remote control of the servo mechanism representing automatic blinds.
-- RGB lighting with the ability to set any color and brightness from the application.
-- Various lighting scenes.
-- Displaying current weather data based on the weather api.
+### System Features
+🛡️ Controlling the operation of the motion sensor and detecting intrusions. </br>
+🔔 Sending notifications and turning on the alarm when an intrusion is detected, with the option of turning off each of these functions. </br>
+📈 Measuring current temperature and humidity in a room and displaying data in the application. </br>
+⚙️ Remote control of the servo mechanism representing automatic blinds. </br>
+💡 RGB lighting with the ability to set any color and brightness from the application. </br>
+🌈 Various lighting scenes. </br>
+🌦️ Displaying current weather data based on the API calls. </br>
 
 
 # Table of contents
-- [Part list](#part-list)
-- [Hardware Architecture](#hardware-architecture)
-- [Software Architecture](#software-architecture)
-- [Used Technologies](#used-technologies)
-- [Storing data and managing states](#database)
-- [Network Communication](#network)
-- [Ionic App - Architecture and setup guide](#ionic)
-- [Setup the Raspberry Pi](#setup-the-raspberry-pi)
-- [Setup Flask Web Server](#setup-flask)
-- [Expansion Possibilities](#expansion-possibilities)
+1. [Hardware Components](#hardware-components)
+2. [Hardware Architecture](#hardware-architecture)
+3. [Software Architecture](#software-architecture)
+4. [Full list of software technologies](#used-technologies)
+5. [Network Communication](#network)
+6. [Mobile Application](#ionic)
+7. [Setup the Raspberry Pi](#setup-the-raspberry-pi)
+8. [Setup Flask Web Server](#setup-flask)
+9. [Expansion Possibilities](#expansion-possibilities)
 
-
-<a name="part-list"></a>
-## Part list
+<a name="hardware-components"></a>
+# Hardware Components
 
 | Name  | Anmount | Description |
 | ------------- | ------------- | ------------- |
@@ -61,18 +51,22 @@ The main goal was to develop a system allowing for remote control of home automa
 | Resistor 1 kΩ  | 1 | - |
 
 <a name="hardware-architecture"></a>
-## Hardware Architecture
-![scheme](https://github.com/user-attachments/assets/979696b2-025e-485b-8386-d008075ac5f7)
-<i>Some components should be directly grounded to the raspberry pi to work properly. However, it is not recommended to power components such as motors directly from the board pins, because too high current may damage the pin or the computer.</i> <br/>
 
+# Hardware Architecture
+![scheme](https://github.com/user-attachments/assets/979696b2-025e-485b-8386-d008075ac5f7)
+
+> [!CAUTION]
+> NEVER connect LEDs up to the GPIO pins without a resistor. The Raspberry Pi GPIO pins can only supply a small current (about 60mA). The LEDs will want to draw more, and if allowed to they may damage your Raspberry Pi or the pins used.
+
+> [!WARNING]
+> Low-current components like sensors and Buzzers / LEDs should be grounded directly to the Raspberry Pi to avoid incorrect current flow. However, it is not recommended to power and ground high-current components such as motors directly from the board pins, as too high current may permamently damage the pins or the Raspberry Pi itself.
 
 <a name="software-architecture"></a>
-## Software Architecture
+# Software Architecture
 ![software architecture](https://github.com/MKaczmarski07/smart-home/assets/95142305/5c28e503-e384-4ae9-9a3b-06f5e70e3058)
 
-
 <a name="used-technologies"></a>
-## Used Technologies
+# Full list of software technologies
 
 ### Programming Languages
 [TypeScript 🔗](https://typescriptlang.org)<br>
@@ -92,40 +86,30 @@ The main goal was to develop a system allowing for remote control of home automa
 ### Databases
 [SQLite 🔗](https://www.sqlite.org)<br>
 
-<a name="database"></a>
-## Storing data and managing states
-All states and attributes are stored in the relational database in a table named states. Every IoT device and utility ( such as light scene ) is represented by a unique address.
-
-| Field  | Type |
-| ------------- | ------------- |
-| id | INTEGER PRIMARY KEY |
-| adress | TEXT UNIQUE |
-| state | TEXT |
-| attributes | TEXT |
-
 <a name="network"></a>
-## Network Communication
-Communication between the user's application and the server ( Raspberry PI ) takes place in the local network ( LAN ). This is a common solution used in IoT systems. Local network ensures reliable and secure communication. Devices can communicate with each other without the need for an internet connection and unauthorized access is more difficult. <br/>
+# Network Communication
+Communication between the user's application and the server (Raspberry PI) takes place in the local network (LAN). Local network ensures reliable and secure communication, as devices can communicate with each other without the need for an internet connection.<br/>
 
-Remote communication with the system via the Internet is also possible, e.g. by port forwarding. However, this solution requires an additional layer of security, including user authentication and protection against various types of external attacks.
-
+Remote communication with the system via the Internet is also possible, e.g. by port forwarding configured on the router. However, this solution requires an additional layer of security, including user authentication and protection against various types of malicious behaviors.
 
 <a name="ionic"></a>
-## Ionic App
+# Mobile Application
+
+### User Interface
+![Mockup](https://github.com/user-attachments/assets/be52269e-f8ee-4582-b493-0c3fa09b6f28)
+
 ### Core Architecture
-Ionic Framework is a collection of customisable UI Components and tools, allowing for cross-platform develompent. The same code base, written using popular web frameworks ( e.g Angular or React ) can work on many platforms and use native functionalities. It's possible thanks to the Capacitor - a native runtime built by the Ionic team.<br/>
+For this project, I decided to use Angular 17 as the main framework with the modular architecture. The Angular based web application can be compiled into native-like mobile application using Ionic Framework & Capacitor runtime. Ionic itself is not only allowing for cross-platform development, but also provides a collection of customisable UI Components and building tools.</br>
 
-For this project, I decided to use Angular version 17 as the main framework. While the Standalone approach is newer and makes use of more modern Angular 17 APIs, the Modules approach is currently more supported in Ionic. Most of the Angular examples on documentation website use the Modules approach.<br/>
+Breaking the application into modules allows for significant reduction of loading time. Additionally, main routing strategy uses [Ionic tabs](https://ionicframework.com/docs/api/tabs) architecture, which also increases performance of the native application.
 
-Breaking the application into modules allows for significant reduction of loading time. Main routing strategy uses [Ionic Tabs](https://ionicframework.com/docs/api/tabs) architecture, which also increases performance of the native application.
-
-### Setup Guide
+### Ionic Setup Guide
 Before you begin, make sure you have the following installed on your machine:
 
 - Node.js (version 18.13 or later) 
 - npm package manager (version 9.0 or later)
 
-To install all required dependencies, move to the app main workspace ( frontend folder ) and run:
+To install all required dependencies, move to the app main workspace (frontend folder) and run:
 
     npm i
 
@@ -137,31 +121,35 @@ Your application is ready at port 8100.
 
     http://localhost:8100/
 
-
-<a name="raspi"></a>
-## Setup the Raspberry Pi
+# <a name="raspi"></a>
+# Setup the Raspberry Pi
 
 ### First steps
-The first step is to upload the Raspberry  Pi OS image to the SD card. This can be easily done using the [Raspberry Pi Imager](https://www.raspberrypi.com/software/) tool available on the official website.
+The first step is to upload the Raspberry Pi OS image to the SD card. This can be easily done using the [Raspberry Pi Imager](https://www.raspberrypi.com/software/) tool available on the official website. </br>
 
-After installing the system and initial configuration, you can connect to the microcomputer wirelessly using SSH. In the terminal on your computer, enter:
+After installing the system, you can either access the Raspberry Pi OS using keyboard and monitor connected directly to the computer, or remotely via SSH.
+
+To access the device via SSH, enter the following in the terminal:
 
 ```
   ssh username@ipAddress
   password
 ```
-Where the first part corresponds to the user account, and the second part is the IP address of the raspberry in the local network. The default user is "pi" and the default password is "raspberry".
+The default SSH user is "pi" and the default password is "raspberry".
 
 ### Safe shutdown
-The raspberrypi microcomputer should not be turned off by immediately disconnecting the power supply, as this may damage the system or the SD card. To safely turn off your device, in the raspberry terminal, enter
+> [!WARNING]
+> The raspberrypi microcomputer should not be turned off by immediately disconnecting the power supply, as this may damage the system or the SD card. 
+
+To safely turn off the device, enter the following the the Raspberry Pi OS terminal:
 ```
   sudo shutdown -h now
 ```
-And wait until the green LED on the raspberry stops blinking
+And wait until the green LED on the raspberry stops blinking.
 
 <a name="setup-flask"></a>
-## Setup Flask Web Server Manually
-First, install the required dependencies
+# Setup Flask Web Server on the Raspberry Pi
+First, install the required dependencies for this project:
 
 ```
 sudo apt update
@@ -177,7 +165,10 @@ Then, go to the backend folder and run the server.py file
 ```
 python server.py
 ```
+
 <a name="expansion-possibilities"></a>
 ## Expansion Possibilities
-- Due to the availability of funds, the project uses a wired connection to sensors and actuators, directly to the GPIO ports. In a full-scale home system, communication could take place wirelessly, e.g. via the ZigBee protocol or Bluetooth.
-- RGB LEDs can be replaced with a regular light bulb or an RGB bulb powered by the power grid. Such a bulb can be controlled using a relay that connects to the system wirelessly using a micro-controller such as ESP8266.
+- Due to the low availability of hardware components, the communication between Raspberry Pi and sensors & actuators is achieved via wired connections. In a full-scale building automation system, communication could take place wirelessly, e.g. via the ZigBee, Bluetooth, LoRa or MQTT. However, that would require additional hardware components and different software architecture decisions.
+- RGB LEDs can be replaced with a regular light bulb or an RGB bulb powered directly from the power grid. Such light source can be controlled via a wireless relay. The good example would be ESP8266.
+- The same rule can be applied to other hardware elements, such as motors. The servomechanism used in the project is controlled via PWM signal modulation, which is widely used control technique in the industrial world. 
+
