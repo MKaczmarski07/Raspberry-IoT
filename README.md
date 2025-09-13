@@ -12,10 +12,10 @@
 [![My Skills](https://skillicons.dev/icons?i=python,raspberrypi,ubuntu,flask,typescript,angular,sass,sqlite)](https://skillicons.dev)
 
 ### System Features
-🛡️ Controlling the operation of the motion sensor and detecting intrusions. </br>
-🔔 Sending notifications and turning on the alarm when an intrusion is detected, with the option of turning off each of these functions. </br>
+🛡️ Controlling operation of the motion sensor and detecting intrusions. </br>
+🔔 Sending notifications and turning on the alarm when an intrusion is detected. </br>
 📈 Measuring current temperature and humidity in a room and displaying data in the application. </br>
-⚙️ Remote control of the servo mechanism representing automatic blinds. </br>
+⚙️ Controlling operation of the servomechanism representing automatic blinds. </br>
 💡 RGB lighting with the ability to set any color and brightness from the application. </br>
 🌈 Various lighting scenes. </br>
 🌦️ Displaying current weather data based on the API calls. </br>
