@@ -8,6 +8,9 @@
 - The communication between user interface and hardware components is achieved with client-server model utilizing HTTP protocol and REST API. <br/>
 - A web server hosted on the Raspberry Pi executes Python scripts to manage GPIO pins and establish connectivity with the external world <br/>
 
+### Live Demo
+[Raspberry-IoT Demo Video](https://www.youtube.com/watch?v=RefyAJ8AFuA)
+
 ### Used Technologies
 [![My Skills](https://skillicons.dev/icons?i=python,raspberrypi,ubuntu,flask,typescript,angular,sass,sqlite)](https://skillicons.dev)
 
